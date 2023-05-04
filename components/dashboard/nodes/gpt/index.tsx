@@ -1,3 +1,4 @@
+"use client"; 
 import {Handle, NodeProps, Position} from "reactflow";
 import cx from "classnames";
 import {RxPlus} from "react-icons/rx";

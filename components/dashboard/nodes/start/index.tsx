@@ -1,3 +1,4 @@
+"use client";
 import {Handle, NodeProps, Position} from "reactflow";
 import {RxHome} from 'react-icons/rx'
 
