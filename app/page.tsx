@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default async function Home() {
     return (
-    <div className="z-10 w-full max-w-xl px-5 xl:px-0 text-white">
+    <div className="w-full h-full">
       <Link href="/dashboard">
         Go to dashboard
       </Link>

@@ -28,12 +28,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
     <body className={cx(sfPro.variable, inter.variable)}>
-    <div className="fixed h-screen w-full bg-neutral-900" />
-    <Suspense fallback="...">
-      {/* @ts-expect-error Server Component */}
-      <Nav />
-    </Suspense>
-    <main className="flex min-h-screen w-full">
+    <main className="w-full h-full">
       {children}
     </main>
     <Analytics />
