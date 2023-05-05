@@ -26,6 +26,6 @@ export type NodeDataBase = {
   optionsToConfig?: NodeOption[]
   values?: NodeOption[]
   onEditName: (nodeId: string, newName: string) => void;
-  onOptionClick: (nodeId: string, optionId: string) => void;
+  onOptionClick: (nodeId: string, nodeOption: NodeOption) => void;
 }
 

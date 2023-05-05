@@ -1,17 +1,22 @@
-"use client"; 
+"use client";
 import {Handle, NodeProps, Position} from "reactflow";
 import cx from "classnames";
 import {RxPlus} from "react-icons/rx";
 import {AiOutlineTool, BsChatText, SiOpenai} from "react-icons/all";
 import dynamic from "next/dynamic";
-import {memo} from "react";
+import {memo, useCallback} from "react";
 import {NodeDataBase, NodeOption} from "@/components/dashboard/nodes/customNodeTypes";
 
 
 
 export default function NodeGPT(props: NodeProps<NodeDataBase>) {
   const {id: nodeId, dragging, isConnectable, data } = props
-  const {name,onEditName, onOptionClick} = data
+  const {name,onEditName} = data
+
+  const handleOptionClick = useCallback((option: NodeOption) =>
+    data.onOptionClick(nodeId, option)
+  , [data, nodeId])
+
   return (
     <div className={cx(
       dragging && "cursor-grabbing",
@@ -48,7 +53,7 @@ export default function NodeGPT(props: NodeProps<NodeDataBase>) {
             name={value.name}
             nodeId={nodeId}
             id={value.id}
-            onClickOption={onOptionClick}
+            onClickOption={handleOptionClick.bind(nodeId, value)}
             form={value.form}
           />
         ))}
@@ -64,20 +69,20 @@ export default function NodeGPT(props: NodeProps<NodeDataBase>) {
 
 type OptionProps = NodeOption & {
   nodeId: string
-  onClickOption: (nodeId: string, optionId: string,) => void
+  onClickOption: () => void
 }
 
 function Option({ name, onClickOption, id, nodeId}: OptionProps) {
   return (
     <div
-      onClick={() => onClickOption(nodeId, id)}
+      onClick={onClickOption}
       className={cx(
         "flex items-center gap-2",
         "rounded px-2 py-1 text-xs bg-neutral-700 min-w-full min-h-full",
         "hover:shadow-md hover:bg-neutral-700/90 transition-colors"
       )}
     >
-      <p>{name}</p>
+      <span>{name}</span>
     </div>
   )
 }

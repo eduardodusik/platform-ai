@@ -1,4 +1,4 @@
-"use client"
+
 import {
   addEdge,
   Node,
@@ -8,14 +8,17 @@ import {
   Background,
 } from "reactflow";
 import {neutral} from "tailwindcss/colors";
-import {NodeDataBase} from "@/components/dashboard/nodes/customNodeTypes";
+import {NodeDataBase, NodeOption} from "@/components/dashboard/nodes/customNodeTypes";
 import {useCallback} from "react";
 import NodeStart from "@/components/dashboard/nodes/start";
 import NodeGPT from "@/components/dashboard/nodes/gpt";
 import 'reactflow/dist/style.css';
 
+type ReactFlowInstanceProps = {
+  onOptionClick: (nodeId: string, optionId: NodeOption) => void
+}
 
-export default function ReactFlowInstance() {
+export default function ReactFlowInstance({onOptionClick}: ReactFlowInstanceProps) {
   const initialNodes: Node<NodeDataBase>[] = [
     {
       id: '4',
@@ -24,7 +27,7 @@ export default function ReactFlowInstance() {
       data: {
         name: 'GPT Models',
         onEditName: (nodeId, newName) => console.log(nodeId, newName),
-        onOptionClick: (nodeId, newData) => console.log(nodeId, newData),
+        onOptionClick: onOptionClick,
         values: [
           {
             id: 'open-ai',
