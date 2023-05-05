@@ -8,12 +8,10 @@ type DrawerProps = {
   open: boolean
   onClose: () => void
   nodeOption?: NodeOption
+  nodeId?: string;
+  onChangeValue: (nodeId: string, categoryId: string, valueId: string, newValue: string) => void
 }
-export default function Drawer ({open, onClose, nodeOption}: DrawerProps) {
-  console.log(nodeOption)
-
-  if(!nodeOption) return;
-
+export default function Drawer ({open, onClose, nodeOption, onChangeValue, nodeId}: DrawerProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Portal>
@@ -26,7 +24,11 @@ export default function Drawer ({open, onClose, nodeOption}: DrawerProps) {
             <div className="text text-white font-bold text-2xl">{nodeOption?.name}</div>
             <Separator.Root className="w-full h-[1px] bg-neutral-800" style={{ margin: '15px 0' }} />
           </Dialog.Title>
-          <Dialog.Description className="text-white">Drawer</Dialog.Description>
+          <Dialog.Description className="text-white flex flex-col gap-3">
+            {nodeOption?.values?.map((value) => (
+              <input className="text-black" key={value.name} placeholder={value.name} value={value?.value as string} onChange={(ev) => onChangeValue(nodeId as string, nodeOption?.id, value.name, ev.target.value)} />
+            ))}
+          </Dialog.Description>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

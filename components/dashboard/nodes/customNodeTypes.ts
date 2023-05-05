@@ -9,11 +9,11 @@ export type SelectOption = {
   placeholder?: string
 }
 
-export type OptionForm = {
+export type Field = {
   name: string;
   value: DynamicValue;
   defaultValue?: DynamicValue
-  type: FieldType;
+  type?: FieldType;
   selectedOptions?: SelectOption[];
 }
 
@@ -21,14 +21,19 @@ export type NodeOption = {
   id: string;
   name: string;
   icon?: ReactNode | JSX.Element | ComponentType;
-  form: OptionForm[]
+  values: Field[]
 }
 
 export type NodeDataBase = {
   name: string;
-  optionsToConfig?: NodeOption[]
-  values?: NodeOption[]
+  categories?: NodeOption[]
   onEditName: (nodeId: string, newName: string) => void;
   onOptionClick: (nodeId: string, nodeOption: NodeOption) => void;
 }
 
+
+export type NodeAvailableConfig = {
+  type: string;
+  name: string;
+  categories?: NodeOption[]
+}

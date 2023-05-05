@@ -10,12 +10,13 @@ import {NodeDataBase, NodeOption} from "@/components/dashboard/nodes/customNodeT
 
 
 export default function NodeGPT(props: NodeProps<NodeDataBase>) {
-  const {id: nodeId, dragging, isConnectable, data } = props
+  const {id: nodeId, dragging, isConnectable, data,  } = props
   const {name,onEditName} = data
 
-  const handleOptionClick = useCallback((option: NodeOption) =>
-    data.onOptionClick(nodeId, option)
-  , [data, nodeId])
+
+  const handleOptionClick = useCallback((option: NodeOption) => {
+      data.onOptionClick(nodeId, option)
+    }, [data, nodeId])
 
   return (
     <div className={cx(
@@ -47,14 +48,14 @@ export default function NodeGPT(props: NodeProps<NodeDataBase>) {
         </div>
       </div>
       <div className="flex flex-col mt-2 gap-1 font-light text-xs">
-        {data?.values?.map((value) => (
+        {data?.categories?.map((value) => (
           <Option
             key={value.id}
             name={value.name}
             nodeId={nodeId}
             id={value.id}
-            onClickOption={handleOptionClick.bind(nodeId, value)}
-            form={value.form}
+            onClickOption={() => handleOptionClick(value)}
+            values={value.values}
           />
         ))}
       </div>
