@@ -1,17 +1,20 @@
 import {ComponentType, ReactNode} from "react";
 
+type FieldType = 'text' | 'number' | 'boolean' | 'select' | 'multi-select';
+type DynamicValue = string | string[] | number | boolean;
 
 export type SelectOption = {
   key: string;
-  value: string | string[] | number | boolean;
+  value: DynamicValue;
   placeholder?: string
 }
 
 export type OptionForm = {
   name: string;
-  value: string | string[] | number | boolean;
-  type: 'text' | 'number' | 'boolean' | 'select' | 'multi-select';
-  selectOptions?: SelectOption[];
+  value: DynamicValue;
+  defaultValue?: DynamicValue
+  type: FieldType;
+  selectedOptions?: SelectOption[];
 }
 
 export type NodeOption = {

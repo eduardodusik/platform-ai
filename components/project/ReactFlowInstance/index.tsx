@@ -38,6 +38,15 @@ export default function ReactFlowInstance({onOptionClick}: ReactFlowInstanceProp
               type: 'text',
             }]
           },
+          {
+            id: 'template',
+            name: 'Template',
+            form: [{
+              name: 'llm',
+              value: 'OpenAI',
+              type: 'text',
+            }]
+          },
         ]
       }
     },
@@ -59,7 +68,6 @@ export default function ReactFlowInstance({onOptionClick}: ReactFlowInstanceProp
       proOptions={{hideAttribution: true}}
       fitView
     >
-      {/*<Controls/>*/}
       <Background gap={12} size={1} color={neutral[800]}/>
     </ReactFlow>
   )
