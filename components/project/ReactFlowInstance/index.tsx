@@ -1,3 +1,5 @@
+"use client";
+
 import {
   addEdge,
   Node,
@@ -6,106 +8,140 @@ import {
   useNodesState,
   Background,
 } from "reactflow";
-import {neutral} from "tailwindcss/colors";
-import {NodeDataBase, NodeOption} from "@/components/dashboard/nodes/customNodeTypes";
-import {useCallback, useState} from "react";
+import { neutral } from "tailwindcss/colors";
+import {
+  NodeDataBase,
+  NodeOption,
+  NodeTypeMap,
+} from "@/components/dashboard/nodes/customNodeTypes";
+import { useCallback, useEffect, useState } from "react";
 import NodeStart from "@/components/dashboard/nodes/start";
 import NodeGPT from "@/components/dashboard/nodes/gpt";
-import 'reactflow/dist/style.css';
+import "reactflow/dist/style.css";
 import Drawer from "@/components/project/Drawer";
 
 type ModalDetails = {
-  isOpen: boolean
+  isOpen: boolean;
   nodeId?: string;
-  nodeOption?: NodeOption
-}
-export default function ReactFlowInstance() {
-  const [modalDetails, setModalDetails] = useState<ModalDetails>({isOpen: false})
+  nodeOption?: NodeOption;
+};
 
-  const handleOpenOptionDetails = useCallback((nodeId: string, nodeOption: NodeOption) => {
-    setModalDetails({isOpen: true, nodeOption, nodeId})
-  }, [])
+type WorkflowProps = {
+  nodeData: Node<NodeDataBase>[];
+};
+
+export default function WorkflowInstance({ nodeData }: WorkflowProps) {
+  const [modalDetails, setModalDetails] = useState<ModalDetails>({
+    isOpen: false,
+  });
+
+  const handleOpenOptionDetails = useCallback(
+    (nodeId: string, nodeOption: NodeOption) => {
+      setModalDetails({ isOpen: true, nodeOption, nodeId });
+    },
+    [],
+  );
 
   const handleCloseDrawer = useCallback(() => {
-    setModalDetails({isOpen: false})
-  }, [])
+    setModalDetails({ isOpen: false });
+  }, []);
 
-  const initialNodes: Node<NodeDataBase>[] = [
-    {
-      id: '4',
-      type: 'gpt',
-      position: {x: 200, y: 250},
-      data: {
-        name: 'Hello World LLM',
-        onEditName: (nodeId, newName) => console.log(nodeId, newName),
-        onOptionClick: handleOpenOptionDetails,
-        categories: [
-          {
-            id: 'open-ai',
-            name: 'Model',
-            values: [
-              {
-                name: 'llm',
-                value: 'OpenAI',
-                type: 'text',
-              }
-            ]
-          },
-          {
-            id: 'template',
-            name: 'Template',
-            values: [{
-              name: 'Template',
-              value: 'OpenAI',
-              type: 'text',
-            },
-              {
-                name: 'Variaveis',
-                value: 'OpenAI',
-                type: 'text',
-              }]
-          },
-        ]
-      }
-    },
-  ];
-  const [nodes, setNodes, onNodesChange] = useNodesState<NodeDataBase>(initialNodes);
+  const [nodes, setNodes, onNodesChange] =
+    useNodesState<NodeDataBase>(nodeData);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  console.log({ nodes });
 
-  const onConnect = useCallback((params: any) => setEdges((eds: any) => addEdge(params, eds)), [setEdges]);
+  const addNewConfig = useCallback(
+    (nodeId: string, checked: boolean, newCategory: NodeOption) => {
+      const newNodes = nodes.map((node) => {
+        if (node.id === nodeId) {
+          if (checked) node.data.categories?.push(structuredClone(newCategory));
+          else
+            node.data.categories = node.data.categories?.filter(
+              (x) => x.id !== newCategory.id,
+            );
+          return node;
+        }
 
-  const onChangeValue = useCallback((nodeId: string, categoryId: string, fieldKey: string, newValue: any) => {
-    const node = nodes.find((node) => node.id === nodeId);
+        return node;
+      });
+      setNodes(newNodes);
+    },
+    [nodes, setNodes],
+  );
 
-    if  (node) {
-      const category = node.data?.categories?.find((category) => category.id === categoryId);
+  const onConnect = useCallback(
+    (params: any) => setEdges((eds: any) => addEdge(params, eds)),
+    [setEdges],
+  );
 
-      if (category) {
-        const value = category.values.find((value) => value.name === fieldKey);
+  const onChangeValue = useCallback(
+    (nodeId: string, categoryId: string, fieldKey: string, newValue: any) => {
+      const node = nodes.find((node) => node.id === nodeId);
 
-        if (value) {
-          value.value = newValue;
-          const newNodes = nodes.filter(x => x.id !== nodeId);
-          setNodes([...newNodes, node])
+      if (node) {
+        const category = node.data?.categories?.find(
+          (category) => category.id === categoryId,
+        );
+
+        if (category) {
+          const value = category.values.find(
+            (value) => value.name === fieldKey,
+          );
+
+          if (value) {
+            value.value = newValue;
+            const newNodes = nodes.filter((x) => x.id !== nodeId);
+            console.log(node);
+            setNodes([...newNodes, node]);
+          }
         }
       }
-    }
-  }, [nodes, setNodes])
+    },
+    [nodes, setNodes],
+  );
+
+  const onEditNodeName = useCallback(
+    (nodeId: string, newName: string) => {
+      setNodes((prevState) =>
+        prevState.map((node) => {
+          if (node.id === nodeId) {
+            node.data.name = newName;
+            return node;
+          }
+          return node;
+        }),
+      );
+    },
+    [setNodes],
+  );
+
+  const setUpNodes = (nodesToConfig: typeof nodes): typeof nodes => {
+    return nodesToConfig?.map((node) => ({
+      ...node,
+      data: {
+        ...node?.data,
+        onOptionClick: handleOpenOptionDetails,
+        onConfigChange: addNewConfig,
+        onEditName: onEditNodeName,
+      },
+    }));
+  };
 
   return (
     <>
       <ReactFlow
         className="bg-neutral-900"
-        nodes={nodes}
+        nodes={setUpNodes(nodes)}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
-        proOptions={{hideAttribution: true}}
+        proOptions={{ hideAttribution: true }}
         fitView
       >
-        <Background gap={12} size={1} color={neutral[800]}/>
+        <Background gap={12} size={1} color={neutral[800]} />
       </ReactFlow>
 
       <Drawer
@@ -113,12 +149,13 @@ export default function ReactFlowInstance() {
         open={modalDetails.isOpen}
         onClose={handleCloseDrawer}
         nodeId={modalDetails?.nodeId}
-        nodeOption={modalDetails?.nodeOption}  />
+        nodeOption={modalDetails?.nodeOption}
+      />
     </>
-  )
+  );
 }
 
-const nodeTypes = {
+const nodeTypes: NodeTypeMap = {
   start: NodeStart,
-  gpt: NodeGPT
-}
+  gpt: NodeGPT,
+};

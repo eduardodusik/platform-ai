@@ -9,11 +9,12 @@ export default function NodeStart(props: NodeProps) {
       <RxHome/>
       <p>Start</p>
       <div className="w-1 h-1">
-        <Handle type="source"
-                isConnectable={props.isConnectable}
-                position={Position.Right}
-                id="y"
-                onConnect={(params) => console.log('handle onConnect', params)} className="mr-4 bg-green-800"/>
+        <Handle
+          type="source"
+          isConnectable={props.isConnectable}
+          position={Position.Right}
+          id="y"
+          onConnect={(params) => console.log('handle onConnect', params)} className="mr-4 bg-green-800"/>
       </div>
     </div>
   )
