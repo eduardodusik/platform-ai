@@ -13,9 +13,19 @@ export default function ProjectPage() {
       values: [
         {
           name: "max-tokens",
-          type: "number",
+          type: "textarea",
           defaultValue: 50,
-          value: 0,
+          value: "Texto",
+        },
+        {
+          name: "model-type",
+          type: "select",
+          defaultValue: 50,
+          value: "Texto",
+          selectOptions: [
+            { key: "1", value: "1" },
+            { key: "2", value: "12" },
+          ],
         },
       ],
     },
@@ -34,9 +44,19 @@ export default function ProjectPage() {
             name: "Model",
             values: [
               {
-                name: "llm",
-                value: "OpenAI",
-                type: "text",
+                name: "Model",
+                value: "GPT-3.5-turbo",
+                type: "select",
+                selectOptions: [
+                  { key: "GPT-4", value: "GPT-4" },
+                  { key: "GPT-3.5", value: "GPT-3.5" },
+                  { key: "GPT-3.5-turbo", value: "GPT-3.5-turbo" },
+                  {
+                    key: "text-davinci-edit-001",
+                    value: "text-davinci-edit-001",
+                  },
+                  { key: "ada", value: "ada" },
+                ],
               },
             ],
           },
@@ -47,7 +67,7 @@ export default function ProjectPage() {
               {
                 name: "Template",
                 value: "OpenAI",
-                type: "text",
+                type: "textarea",
               },
               {
                 name: "Variaveis",

@@ -57,22 +57,6 @@ export default function Drawer({
                 )
               }
             />
-            {/*{nodeOption?.values?.map((value) => (*/}
-            {/*  <input*/}
-            {/*    className="text-black"*/}
-            {/*    key={value.name}*/}
-            {/*    placeholder={value.name}*/}
-            {/*    value={value?.value as string}*/}
-            {/*    onChange={(ev) =>*/}
-            {/*      onChangeValue(*/}
-            {/*        nodeId as string,*/}
-            {/*        nodeOption?.id,*/}
-            {/*        value.name,*/}
-            {/*        ev.target.value,*/}
-            {/*      )*/}
-            {/*    }*/}
-            {/*  />*/}
-            {/*))}*/}
           </Dialog.Description>
         </Dialog.Content>
       </Dialog.Portal>

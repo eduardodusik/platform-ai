@@ -116,14 +116,14 @@ function AvailableConfigMenu({
               onCheckedChange={(checked) => onConfigChange(checked, value)}
               checked={addedConfigs?.some((config) => config.id === value.id)}
               className={cx(
-                "flex cursor-default select-none items-center rounded-md px-2 py-2 text-xs outline-none",
+                "flex cursor-default select-none items-center gap-2 rounded-md px-2 py-2 text-xs outline-none",
                 "text-white focus:bg-neutral-900 dark:text-white dark:focus:bg-neutral-600",
               )}
             >
-              <span>{value.name}</span>
               <DropdownMenu.ItemIndicator>
                 <RxCheck />
               </DropdownMenu.ItemIndicator>
+              <span>{value.name}</span>
             </DropdownMenu.CheckboxItem>
           ))}
         </DropdownMenu.Content>
