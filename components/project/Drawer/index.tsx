@@ -1,8 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import {
-  Field,
-  NodeOption,
-} from "@/components/dashboard/nodes/customNodeTypes";
+import { Field, NodeOption } from "@/components/project/nodes/customNodeTypes";
 import cx from "classnames";
 import * as Separator from "@radix-ui/react-separator";
 import { DynamicForm } from "@/components/DynamicForm";
