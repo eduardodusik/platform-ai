@@ -2,17 +2,17 @@
 import { Handle, NodeProps, Position } from "reactflow";
 import cx from "classnames";
 import { RxPlus } from "react-icons/rx";
-import { createElement, memo, ReactNode, useCallback } from "react";
+import { createElement, useCallback } from "react";
 import {
   NodeDataBase,
   NodeOption,
-} from "@/components/dashboard/nodes/customNodeTypes";
+} from "@/components/project/nodes/customNodeTypes";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 
 import { RxCheck } from "react-icons/rx";
+import { SiOpenai } from "react-icons/all";
 
-export default function NodeGPT(props: NodeProps<NodeDataBase>) {
+export default function SimpleNode(props: NodeProps<NodeDataBase>) {
   const { id: nodeId, dragging, isConnectable, data } = props;
   const { name, onEditName, availableConfig, onConfigChange } = data;
 
@@ -71,6 +71,7 @@ export default function NodeGPT(props: NodeProps<NodeDataBase>) {
             name={value.name}
             nodeId={nodeId}
             id={value.id}
+            icon={value.icon}
             onClickOption={() => handleOptionClick(value)}
             values={value.values}
           />
@@ -137,7 +138,8 @@ type OptionProps = NodeOption & {
   onClickOption: () => void;
 };
 
-function Option({ name, onClickOption }: OptionProps) {
+function Option({ name, onClickOption, icon }: OptionProps) {
+  console.log(icon);
   return (
     <div
       onClick={onClickOption}
@@ -147,6 +149,7 @@ function Option({ name, onClickOption }: OptionProps) {
         "transition-colors hover:bg-neutral-700/90 hover:shadow-md",
       )}
     >
+      {icon && icon({})}
       <span>{name}</span>
     </div>
   );

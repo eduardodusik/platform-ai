@@ -1,6 +1,7 @@
-import { ComponentType, ReactNode } from "react";
-import NodeGPT from "@/components/dashboard/nodes/gpt";
+import { ComponentType, ReactElement, ReactNode } from "react";
+import simpleNode from "@/components/project/nodes/simpleNode";
 import dynamic from "next/dynamic";
+import { IconType } from "react-icons/lib";
 
 type FieldType =
   | "text"
@@ -9,7 +10,7 @@ type FieldType =
   | "boolean"
   | "select"
   | "multi-select";
-type DynamicValue = string | string[] | number | boolean;
+type DynamicValue = string | string[] | number | boolean | null | undefined;
 
 export type SelectOption = {
   key: string;
@@ -20,19 +21,23 @@ export type SelectOption = {
 export type Field = {
   name: string;
   value: DynamicValue;
-  defaultValue?: DynamicValue;
-  type?: FieldType;
+  label: string;
+  placeholder?: string;
+  helperText?: string;
+  defaultValue: DynamicValue;
+  type: FieldType;
   selectOptions?: SelectOption[];
 };
 
 export type NodeOption = {
   id: string;
   name: string;
-  icon?: ReturnType<typeof dynamic>;
+  icon?: IconType;
   values: Field[];
 };
 
 export type NodeDataBase = {
+  id: string;
   name: string;
   categories?: NodeOption[];
   availableConfig?: NodeOption[];
@@ -50,4 +55,4 @@ export type NodeAvailableConfig = NodeOption & {
 };
 
 export type CustomNodesKeys = "start" | "gpt";
-export type NodeTypeMap = Record<CustomNodesKeys, typeof NodeGPT>;
+export type NodeTypeMap = Record<CustomNodesKeys, typeof simpleNode>;

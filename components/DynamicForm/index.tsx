@@ -1,8 +1,6 @@
-import { Field } from "@/components/dashboard/nodes/customNodeTypes";
+import { Field } from "@/components/project/nodes/customNodeTypes";
 import * as Form from "@radix-ui/react-form";
 import cx from "classnames";
-import * as Select from "@radix-ui/react-select";
-import { ChevronDown, ChevronUpIcon } from "lucide-react";
 
 type DynamicFormProps = {
   fields: Field[];
@@ -33,9 +31,10 @@ function Field({
   if (field.type === "text" || field.type === "number") {
     return (
       <Form.Field name={field.name} className="flex flex-col gap-1">
-        <Form.Label className="text-md font-semibold">{field.name}</Form.Label>
+        <Form.Label className="text-md font-semibold">{field.label}</Form.Label>
         <Form.Control
           asChild
+          placeholder={field?.placeholder}
           className={cx(
             "box-border",
             "focus:border-amber-700 focus:ring-0 ",
@@ -56,9 +55,10 @@ function Field({
   if (field.type === "textarea") {
     return (
       <Form.Field name={field.name} className="flex flex-col gap-1">
-        <Form.Label className="text-md font-semibold">{field.name}</Form.Label>
+        <Form.Label className="text-md font-semibold">{field.label}</Form.Label>
         <Form.Control
           asChild
+          placeholder={field?.placeholder}
           className={cx(
             "box-border",
             "focus:border-amber-700 focus:ring-0 ",
@@ -78,10 +78,12 @@ function Field({
   if (field.type === "select") {
     return (
       <Form.Field name={field.name} className="flex flex-col gap-1">
-        <Form.Label className="text-md font-semibold">{field.name}</Form.Label>
+        <Form.Label className="text-md font-semibold">{field.label}</Form.Label>
         <Form.Control
           asChild
           onChange={(ev) => onChange(ev.target.value)}
+          defaultValue={field.value as string}
+          placeholder={field?.placeholder}
           className={cx(
             "box-border",
             "focus:border-amber-700 focus:ring-0 ",
@@ -89,38 +91,9 @@ function Field({
             "hover:border-amber-800",
           )}
         >
-          {/*<Select.Root>*/}
-          {/*  <Select.Trigger>*/}
-          {/*    <Select.Value placeholder={field.value ?? "Choose a value"} />*/}
-          {/*    <Select.Icon>*/}
-          {/*      <ChevronDown />*/}
-          {/*    </Select.Icon>*/}
-          {/*  </Select.Trigger>*/}
-          {/*  <Select.Portal>*/}
-          {/*    <Select.Content>*/}
-          {/*      <Select.ScrollUpButton>*/}
-          {/*        <ChevronUpIcon />*/}
-          {/*      </Select.ScrollUpButton>*/}
-          {/*      <Select.Viewport>*/}
-          {/*        {field?.selectOptions?.map((option) => (*/}
-          {/*          <Select.Item*/}
-          {/*            value={option.value as string}*/}
-          {/*            key={option.key}*/}
-          {/*          >*/}
-          {/*            {option.key}*/}
-          {/*          </Select.Item>*/}
-          {/*        ))}*/}
-          {/*      </Select.Viewport>*/}
-          {/*    </Select.Content>*/}
-          {/*  </Select.Portal>*/}
-          {/*</Select.Root>*/}
           <select>
             {field?.selectOptions?.map((option) => (
-              <option
-                selected={option.key === field.value}
-                key={option.key}
-                value={option?.value as string}
-              >
+              <option key={option.key} value={option?.value as string}>
                 {option.key}
               </option>
             ))}

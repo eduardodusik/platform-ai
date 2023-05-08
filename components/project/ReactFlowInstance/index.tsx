@@ -13,10 +13,10 @@ import {
   NodeDataBase,
   NodeOption,
   NodeTypeMap,
-} from "@/components/dashboard/nodes/customNodeTypes";
+} from "@/components/project/nodes/customNodeTypes";
 import { useCallback, useEffect, useState } from "react";
-import NodeStart from "@/components/dashboard/nodes/start";
-import NodeGPT from "@/components/dashboard/nodes/gpt";
+import NodeStart from "@/components/project/nodes/start";
+import SimpleNode from "@/components/project/nodes/simpleNode";
 import "reactflow/dist/style.css";
 import Drawer from "@/components/project/Drawer";
 
@@ -117,6 +117,7 @@ export default function WorkflowInstance({ nodeData }: WorkflowProps) {
   );
 
   const setUpNodes = (nodesToConfig: typeof nodes): typeof nodes => {
+    console.log(nodesToConfig);
     return nodesToConfig?.map((node) => ({
       ...node,
       data: {
@@ -157,5 +158,5 @@ export default function WorkflowInstance({ nodeData }: WorkflowProps) {
 
 const nodeTypes: NodeTypeMap = {
   start: NodeStart,
-  gpt: NodeGPT,
+  gpt: SimpleNode,
 };

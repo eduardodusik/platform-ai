@@ -2,82 +2,17 @@ import WorkflowInstance from "@/components/project/ReactFlowInstance";
 import {
   NodeDataBase,
   NodeOption,
-} from "@/components/dashboard/nodes/customNodeTypes";
+} from "@/components/project/nodes/customNodeTypes";
 import { Node } from "reactflow";
+import { GPT_CONFIG } from "@/app/project/node-data/gpt";
 
 export default function ProjectPage() {
-  const availableConfig: NodeOption[] = [
-    {
-      name: "Settings",
-      id: "settings-config",
-      values: [
-        {
-          name: "max-tokens",
-          type: "textarea",
-          defaultValue: 50,
-          value: "Texto",
-        },
-        {
-          name: "model-type",
-          type: "select",
-          defaultValue: 50,
-          value: "Texto",
-          selectOptions: [
-            { key: "1", value: "1" },
-            { key: "2", value: "12" },
-          ],
-        },
-      ],
-    },
-  ];
   const nodes: Node<NodeDataBase>[] = [
     {
       id: "4",
       type: "gpt",
       position: { x: 200, y: 250 },
-      data: {
-        name: "Hello World LLM",
-        availableConfig: availableConfig,
-        categories: [
-          {
-            id: "open-ai",
-            name: "Model",
-            values: [
-              {
-                name: "Model",
-                value: "GPT-3.5-turbo",
-                type: "select",
-                selectOptions: [
-                  { key: "GPT-4", value: "GPT-4" },
-                  { key: "GPT-3.5", value: "GPT-3.5" },
-                  { key: "GPT-3.5-turbo", value: "GPT-3.5-turbo" },
-                  {
-                    key: "text-davinci-edit-001",
-                    value: "text-davinci-edit-001",
-                  },
-                  { key: "ada", value: "ada" },
-                ],
-              },
-            ],
-          },
-          {
-            id: "template",
-            name: "Template",
-            values: [
-              {
-                name: "Template",
-                value: "OpenAI",
-                type: "textarea",
-              },
-              {
-                name: "Variaveis",
-                value: "OpenAI",
-                type: "text",
-              },
-            ],
-          },
-        ],
-      },
+      data: GPT_CONFIG,
     },
   ];
 
