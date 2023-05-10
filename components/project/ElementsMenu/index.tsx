@@ -2,6 +2,7 @@ import cx from "classnames";
 import { BsBodyText, SiOpenai, HiSparkles } from "react-icons/all";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useRef, useState } from "react";
+import { set } from "zod";
 
 export default function ElementsMenu() {
   return (
@@ -43,7 +44,7 @@ interface NodeItemProps {
 function NodeItem({ name, icon }: NodeItemProps) {
   const [open, setOpen] = useState(false);
   return (
-    <DropdownMenu.Root open={open} modal>
+    <DropdownMenu.Root open={open}>
       <DropdownMenu.Trigger asChild>
         <div
           onMouseEnter={() => setOpen(true)}
@@ -57,27 +58,32 @@ function NodeItem({ name, icon }: NodeItemProps) {
         </div>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal onMouseLeave={() => setOpen(false)}>
-        <DropdownMenu.Content
-          align="start"
-          side="right"
-          sideOffset={10}
-          alignOffset={2}
-          hideWhenDetached
-          onInteractOutside={() => setOpen(false)}
-          className={cx(
-            "rdx-side-top:animate-slide-up rdx-side-bottom:animate-slide-down",
-            "w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56",
-            "bg-white dark:bg-neutral-700",
-          )}
-        >
-          <div
-            id="xxx"
-            onMouseOver={() => setOpen(false)}
-            onMouseLeave={() => setOpen(false)}
+        <div onMouseLeave={() => setOpen(false)}>
+          <DropdownMenu.Content
+            asChild
+            align="start"
+            side="right"
+            sideOffset={16}
+            alignOffset={8}
+            hideWhenDetached
+            onInteractOutside={() => setOpen(false)}
+            className={cx(
+              "rdx-side-top:animate-slide-up rdx-side-bottom:animate-slide-down",
+              "w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56",
+              "bg-white dark:bg-neutral-700",
+            )}
           >
-            <DropdownMenu.Item>Option</DropdownMenu.Item>
-          </div>
-        </DropdownMenu.Content>
+            <div onMouseLeave={() => setOpen(false)}>
+              <DropdownMenu.Item className="text-white">GPT</DropdownMenu.Item>
+              <DropdownMenu.Item className="text-white">
+                Whisper
+              </DropdownMenu.Item>
+              <DropdownMenu.Item className="text-white">
+                Dalle
+              </DropdownMenu.Item>
+            </div>
+          </DropdownMenu.Content>
+        </div>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
   );
