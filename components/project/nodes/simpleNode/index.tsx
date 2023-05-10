@@ -2,7 +2,7 @@
 import { Handle, NodeProps, Position } from "reactflow";
 import cx from "classnames";
 import { RxPlus } from "react-icons/rx";
-import { createElement, useCallback } from "react";
+import { useCallback } from "react";
 import {
   NodeDataBase,
   NodeOption,
@@ -34,8 +34,8 @@ export default function SimpleNode(props: NodeProps<NodeDataBase>) {
     <div
       className={cx(
         dragging && "cursor-grabbing",
-        "cursor-pointer rounded bg-neutral-800 p-2",
-        "border border-neutral-700",
+        "cursor-pointer rounded bg-black p-2",
+        "border border-neutral-800",
         "shadow-blue-50 transition-shadow hover:shadow-md",
         "min-h-[100px] min-w-[200px]",
       )}
@@ -145,7 +145,7 @@ function Option({ name, onClickOption, icon }: OptionProps) {
       onClick={onClickOption}
       className={cx(
         "flex items-center gap-2",
-        "min-h-full min-w-full rounded bg-neutral-700 px-2 py-1 text-xs",
+        "min-h-full min-w-full rounded border border-neutral-800 bg-black px-2 py-1 text-xs",
         "transition-colors hover:bg-neutral-700/90 hover:shadow-md",
       )}
     >

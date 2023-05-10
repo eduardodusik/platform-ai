@@ -9,6 +9,10 @@ module.exports = {
   },
   theme: {
     extend: {
+      colors: {
+        transparent: "transparent",
+        "primary-black": "#151718",
+      },
       fontFamily: {
         display: ["var(--font-sf)", "system-ui", "sans-serif"],
         default: ["var(--font-inter)", "system-ui", "sans-serif"],

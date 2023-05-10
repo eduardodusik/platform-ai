@@ -9,7 +9,8 @@ type FieldType =
   | "number"
   | "boolean"
   | "select"
-  | "multi-select";
+  | "multi-select"
+  | "set-env";
 type DynamicValue = string | string[] | number | boolean | null | undefined;
 
 export type SelectOption = {

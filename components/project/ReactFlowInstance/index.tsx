@@ -19,6 +19,7 @@ import NodeStart from "@/components/project/nodes/start";
 import SimpleNode from "@/components/project/nodes/simpleNode";
 import "reactflow/dist/style.css";
 import Drawer from "@/components/project/Drawer";
+import Menu from "@/components/project/menu";
 
 type ModalDetails = {
   isOpen: boolean;
@@ -145,6 +146,7 @@ export default function WorkflowInstance({ nodeData }: WorkflowProps) {
         <Background gap={12} size={1} color={neutral[800]} />
       </ReactFlow>
 
+      <Menu />
       <Drawer
         onChangeValue={onChangeValue}
         open={modalDetails.isOpen}

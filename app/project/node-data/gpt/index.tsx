@@ -1,9 +1,7 @@
-"use client";
 import {
   NodeDataBase,
   NodeOption,
 } from "@/components/project/nodes/customNodeTypes";
-import { SiOpenai } from "react-icons/all";
 
 const GPT_AVAILABLE_CONFIG: NodeOption[] = [
   {
@@ -75,6 +73,20 @@ const GPT_AVAILABLE_CONFIG: NodeOption[] = [
       },
     ],
   },
+  {
+    id: "set-env",
+    name: "Set env",
+    values: [
+      {
+        name: "env",
+        placeholder: "Enter env",
+        label: "Env",
+        value: null,
+        defaultValue: null,
+        type: "set-env",
+      },
+    ],
+  },
 ];
 
 export const GPT_CONFIG: NodeDataBase = {
@@ -85,7 +97,6 @@ export const GPT_CONFIG: NodeDataBase = {
     {
       id: "model",
       name: "Model",
-      icon: SiOpenai,
       values: [
         {
           name: "Model",
