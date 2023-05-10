@@ -2,7 +2,6 @@ import cx from "classnames";
 import { BsBodyText, SiOpenai, HiSparkles } from "react-icons/all";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useRef, useState } from "react";
-import { set } from "zod";
 
 export default function ElementsMenu() {
   return (
