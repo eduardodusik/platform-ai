@@ -20,7 +20,7 @@ import { GPT_CONFIG } from "@/app/project/node-data/gpt";
 import { produce } from "immer";
 import { devtools, persist } from "zustand/middleware";
 
-interface RFState {
+export interface RFState {
   nodes: Node<NodeDataBase>[];
   edges: Edge[];
   onNodesChange: OnNodesChange;

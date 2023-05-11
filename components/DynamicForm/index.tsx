@@ -2,7 +2,7 @@ import { Field } from "@/components/project/nodes/customNodeTypes";
 import * as Form from "@radix-ui/react-form";
 import cx from "classnames";
 import * as Select from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 type DynamicFormProps = {
