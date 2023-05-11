@@ -1,7 +1,4 @@
-import {
-  CustomNodesKeys,
-  NodeDataBase,
-} from "@/components/project/nodes/customNodeTypes";
+import { NodeDataBase } from "@/components/project/nodes/customNodeTypes";
 import { GPT_CONFIG } from "@/app/project/node-data/gpt";
 import { NODE_IDS_ENUM } from "@/app/project/node-data/NodeTypes";
 

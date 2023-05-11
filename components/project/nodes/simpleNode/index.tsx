@@ -11,11 +11,10 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { RxCheck } from "react-icons/rx";
 import { useDrawerStore } from "@/components/project/Drawer/store";
-import { shallow } from "zustand/shallow";
 import { useRFState } from "../../../../store/FlowStore";
 
 export default function SimpleNode(props: NodeProps<NodeDataBase>) {
-  const { id: nodeId, dragging, isConnectable, data } = props;
+  const { id: nodeId, dragging, isConnectable, data, selected } = props;
   const { name, availableConfig } = data;
   const { onOpenDrawer } = useDrawerStore((state) => ({
     onOpenDrawer: state.onOpenDrawer,
@@ -45,17 +44,19 @@ export default function SimpleNode(props: NodeProps<NodeDataBase>) {
         dragging && "cursor-grabbing",
         "cursor-pointer rounded bg-black p-2",
         "border border-neutral-800",
-        "shadow-blue-50 transition-shadow hover:shadow-md",
         "min-h-[100px] min-w-[200px]",
+        selected &&
+          "border-amber-500 shadow-lg shadow-amber-800/10 transition-shadow",
       )}
     >
       <Handle
         isConnectable={isConnectable}
         type="target"
         position={Position.Left}
-        id="target"
+        id={`${nodeId}-in`}
         onConnect={(params) => console.log("handle onConnect", params)}
       />
+
       <div className="flex items-center justify-between gap-2">
         <input
           onChange={(ev) => onEditName?.(nodeId, ev.target.value)}
@@ -86,6 +87,13 @@ export default function SimpleNode(props: NodeProps<NodeDataBase>) {
           />
         ))}
       </div>
+      <Handle
+        isConnectable={isConnectable}
+        type="source"
+        position={Position.Right}
+        id={`${nodeId}-out`}
+        onConnect={(params) => console.log("handle onConnect", params)}
+      />
     </div>
   );
 }

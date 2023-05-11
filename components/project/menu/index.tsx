@@ -1,6 +1,8 @@
 import ElementsMenu from "@/components/project/ElementsMenu";
+import { useRFState } from "../../../store/FlowStore";
 
 export default function Menu() {
+  const { nodes } = useRFState((state) => ({ nodes: state.nodes }));
   return (
     <div className="fixed left-0 top-10 flex h-full items-center gap-3">
       <div className="h-full w-52 border-r border-neutral-700 bg-neutral-900">
@@ -27,7 +29,11 @@ export default function Menu() {
           <div className="pt-5">
             <span className="font-bold">Nodes</span>
             <div className="flex flex-col pt-2">
-              <span className="font-light">Generate text</span>
+              {nodes.map((node) => (
+                <span key={node.id} className="font-light">
+                  {node.data.name}
+                </span>
+              ))}
             </div>
           </div>
         </div>
