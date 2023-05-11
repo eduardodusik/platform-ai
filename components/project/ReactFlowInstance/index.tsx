@@ -1,140 +1,45 @@
 "use client";
 
 import {
-  addEdge,
   Node,
   ReactFlow,
-  useEdgesState,
-  useNodesState,
   Background,
+  useReactFlow,
+  ReactFlowProvider,
 } from "reactflow";
 import { neutral } from "tailwindcss/colors";
 import {
+  CustomNodesKeys,
   NodeDataBase,
   NodeOption,
   NodeTypeMap,
 } from "@/components/project/nodes/customNodeTypes";
-import { useCallback, useEffect, useState } from "react";
-import NodeStart from "@/components/project/nodes/start";
 import SimpleNode from "@/components/project/nodes/simpleNode";
 import "reactflow/dist/style.css";
 import Drawer from "@/components/project/Drawer";
 import Menu from "@/components/project/menu";
-
-type ModalDetails = {
-  isOpen: boolean;
-  nodeId?: string;
-  nodeOption?: NodeOption;
-};
+import { RFState, useRFState } from "../../../store/FlowStore";
 
 type WorkflowProps = {
   nodeData: Node<NodeDataBase>[];
 };
 
-export default function WorkflowInstance({ nodeData }: WorkflowProps) {
-  const [modalDetails, setModalDetails] = useState<ModalDetails>({
-    isOpen: false,
-  });
+const selector = (state: Partial<RFState>) => ({
+  nodes: state.nodes,
+  edges: state.edges,
+  onNodesChange: state.onNodesChange,
+  onEdgesChange: state.onEdgesChange,
+  onConnect: state.onConnect,
+});
 
-  const handleOpenOptionDetails = useCallback(
-    (nodeId: string, nodeOption: NodeOption) => {
-      setModalDetails({ isOpen: true, nodeOption, nodeId });
-    },
-    [],
-  );
-
-  const handleCloseDrawer = useCallback(() => {
-    setModalDetails({ isOpen: false });
-  }, []);
-
-  const [nodes, setNodes, onNodesChange] =
-    useNodesState<NodeDataBase>(nodeData);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  console.log({ nodes });
-
-  const addNewConfig = useCallback(
-    (nodeId: string, checked: boolean, newCategory: NodeOption) => {
-      const newNodes = nodes.map((node) => {
-        if (node.id === nodeId) {
-          if (checked) node.data.categories?.push(structuredClone(newCategory));
-          else
-            node.data.categories = node.data.categories?.filter(
-              (x) => x.id !== newCategory.id,
-            );
-          return node;
-        }
-
-        return node;
-      });
-      setNodes(newNodes);
-    },
-    [nodes, setNodes],
-  );
-
-  const onConnect = useCallback(
-    (params: any) => setEdges((eds: any) => addEdge(params, eds)),
-    [setEdges],
-  );
-
-  const onChangeValue = useCallback(
-    (nodeId: string, categoryId: string, fieldKey: string, newValue: any) => {
-      const node = nodes.find((node) => node.id === nodeId);
-
-      if (node) {
-        const category = node.data?.categories?.find(
-          (category) => category.id === categoryId,
-        );
-
-        if (category) {
-          const value = category.values.find(
-            (value) => value.name === fieldKey,
-          );
-
-          if (value) {
-            value.value = newValue;
-            const newNodes = nodes.filter((x) => x.id !== nodeId);
-            console.log(node);
-            setNodes([...newNodes, node]);
-          }
-        }
-      }
-    },
-    [nodes, setNodes],
-  );
-
-  const onEditNodeName = useCallback(
-    (nodeId: string, newName: string) => {
-      setNodes((prevState) =>
-        prevState.map((node) => {
-          if (node.id === nodeId) {
-            node.data.name = newName;
-            return node;
-          }
-          return node;
-        }),
-      );
-    },
-    [setNodes],
-  );
-
-  const setUpNodes = (nodesToConfig: typeof nodes): typeof nodes => {
-    console.log(nodesToConfig);
-    return nodesToConfig?.map((node) => ({
-      ...node,
-      data: {
-        ...node?.data,
-        onOptionClick: handleOpenOptionDetails,
-        onConfigChange: addNewConfig,
-        onEditName: onEditNodeName,
-      },
-    }));
-  };
-
+function WorkflowInstance() {
+  const { onConnect, onEdgesChange, onNodesChange, edges, nodes } =
+    useRFState(selector);
   return (
     <>
       <ReactFlow
         className="bg-neutral-900"
-        nodes={setUpNodes(nodes)}
+        nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
@@ -147,18 +52,19 @@ export default function WorkflowInstance({ nodeData }: WorkflowProps) {
       </ReactFlow>
 
       <Menu />
-      <Drawer
-        onChangeValue={onChangeValue}
-        open={modalDetails.isOpen}
-        onClose={handleCloseDrawer}
-        nodeId={modalDetails?.nodeId}
-        nodeOption={modalDetails?.nodeOption}
-      />
+      <Drawer />
     </>
   );
 }
 
 const nodeTypes: NodeTypeMap = {
-  start: NodeStart,
   gpt: SimpleNode,
 };
+
+export default function ReactFlowComp() {
+  return (
+    <ReactFlowProvider>
+      <WorkflowInstance />
+    </ReactFlowProvider>
+  );
+}

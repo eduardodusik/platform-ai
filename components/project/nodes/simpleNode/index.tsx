@@ -10,17 +10,26 @@ import {
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { RxCheck } from "react-icons/rx";
-import { SiOpenai } from "react-icons/all";
+import { useDrawerStore } from "@/components/project/Drawer/store";
+import { shallow } from "zustand/shallow";
+import { useRFState } from "../../../../store/FlowStore";
 
 export default function SimpleNode(props: NodeProps<NodeDataBase>) {
   const { id: nodeId, dragging, isConnectable, data } = props;
-  const { name, onEditName, availableConfig, onConfigChange } = data;
+  const { name, availableConfig } = data;
+  const { onOpenDrawer } = useDrawerStore((state) => ({
+    onOpenDrawer: state.onOpenDrawer,
+  }));
+  const { onConfigChange, onEditName } = useRFState((state) => ({
+    onConfigChange: state.addNewConfig,
+    onEditName: state.onEditNodeName,
+  }));
 
   const handleOptionClick = useCallback(
     (option: NodeOption) => {
-      data?.onOptionClick?.(nodeId, option);
+      onOpenDrawer(nodeId, option);
     },
-    [data, nodeId],
+    [nodeId, onOpenDrawer],
   );
 
   const handleAddNewCategory = useCallback(
@@ -139,7 +148,6 @@ type OptionProps = NodeOption & {
 };
 
 function Option({ name, onClickOption, icon }: OptionProps) {
-  console.log(icon);
   return (
     <div
       onClick={onClickOption}

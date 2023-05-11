@@ -16,6 +16,9 @@ dependencies:
   '@radix-ui/react-form':
     specifier: ^0.0.2
     version: 0.0.2(react-dom@18.2.0)(react@18.2.0)
+  '@radix-ui/react-menubar':
+    specifier: ^1.0.2
+    version: 1.0.2(@types/react@18.0.26)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-popover':
     specifier: ^1.0.5
     version: 1.0.5(@types/react@18.0.26)(react-dom@18.2.0)(react@18.2.0)
@@ -67,6 +70,9 @@ dependencies:
   framer-motion:
     specifier: ^8.4.2
     version: 8.5.5(react-dom@18.2.0)(react@18.2.0)
+  immer:
+    specifier: ^10.0.2
+    version: 10.0.2
   lucide-react:
     specifier: 0.105.0-alpha.4
     version: 0.105.0-alpha.4(react@18.2.0)
@@ -96,7 +102,7 @@ dependencies:
     version: 0.3.0(react@18.2.0)
   reactflow:
     specifier: ^11.7.0
-    version: 11.7.0(react-dom@18.2.0)(react@18.2.0)
+    version: 11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
   tailwindcss-radix:
     specifier: ^2.8.0
     version: 2.8.0
@@ -106,6 +112,9 @@ dependencies:
   use-debounce:
     specifier: ^9.0.3
     version: 9.0.4(react@18.2.0)
+  zustand:
+    specifier: ^4.3.8
+    version: 4.3.8(immer@10.0.2)(react@18.2.0)
 
 devDependencies:
   '@tailwindcss/forms':
@@ -651,6 +660,29 @@ packages:
       - '@types/react'
     dev: false
 
+  /@radix-ui/react-menubar@1.0.2(@types/react@18.0.26)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-woEg2ZODGoJHonr6ZwC01ZCpDifS6BapI5ythRfvWPBeL/80CX3u4sQKaF/58bbAZQsDnVwO5M9b0XVBN3jLhA==}
+    peerDependencies:
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@radix-ui/primitive': 1.0.0
+      '@radix-ui/react-collection': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-compose-refs': 1.0.0(react@18.2.0)
+      '@radix-ui/react-context': 1.0.0(react@18.2.0)
+      '@radix-ui/react-direction': 1.0.0(react@18.2.0)
+      '@radix-ui/react-id': 1.0.0(react@18.2.0)
+      '@radix-ui/react-menu': 2.0.4(@types/react@18.0.26)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-roving-focus': 1.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': 1.0.0(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
   /@radix-ui/react-popover@1.0.5(@types/react@18.0.26)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-GRHZ8yD12MrN2NLobHPE8Rb5uHTxd9x372DE9PPNnBjpczAQHcZ5ne0KXG4xpf+RDdXSzdLv9ym6mYJCDTaUZg==}
     peerDependencies:
@@ -964,28 +996,28 @@ packages:
       '@babel/runtime': 7.21.0
     dev: false
 
-  /@reactflow/background@11.2.0(react-dom@18.2.0)(react@18.2.0):
+  /@reactflow/background@11.2.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-Fd8Few2JsLuE/2GaIM6fkxEBaAJvfzi2Lc106HKi/ddX+dZs8NUsSwMsJy1Ajs8b4GbiX8v8axfKpbK6qFMV8w==}
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@reactflow/core': 11.7.0(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/core': 11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
       classcat: 5.0.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      zustand: 4.3.7(react@18.2.0)
+      zustand: 4.3.8(immer@10.0.2)(react@18.2.0)
     transitivePeerDependencies:
       - immer
     dev: false
 
-  /@reactflow/controls@11.1.11(react-dom@18.2.0)(react@18.2.0):
+  /@reactflow/controls@11.1.11(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-g6WrsszhNkQjzkJ9HbVUBkGGoUy2z8dQVgH6CYQEjuoonD15cWAPGvjyg8vx8oGG7CuktUhWu5JPivL6qjECow==}
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@reactflow/core': 11.7.0(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/core': 11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
       classcat: 5.0.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -993,7 +1025,7 @@ packages:
       - immer
     dev: false
 
-  /@reactflow/core@11.7.0(react-dom@18.2.0)(react@18.2.0):
+  /@reactflow/core@11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-UJcpbNRSupSSoMWh5UmRp6UUr0ug7xVKmMvadnkKKiNi9584q57nz4HMfkqwN3/ESbre7LD043yh2n678d/5FQ==}
     peerDependencies:
       react: '>=17'
@@ -1009,18 +1041,18 @@ packages:
       d3-zoom: 3.0.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      zustand: 4.3.7(react@18.2.0)
+      zustand: 4.3.8(immer@10.0.2)(react@18.2.0)
     transitivePeerDependencies:
       - immer
     dev: false
 
-  /@reactflow/minimap@11.5.0(react-dom@18.2.0)(react@18.2.0):
+  /@reactflow/minimap@11.5.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-n/3tlaknLpi3zaqCC+tDDPvUTOjd6jglto9V3RB1F2wlaUEbCwmuoR2GYTkiRyZMvuskKyAoQW8+0DX0+cWwsA==}
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@reactflow/core': 11.7.0(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/core': 11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
       '@types/d3-selection': 3.0.5
       '@types/d3-zoom': 3.0.2
       classcat: 5.0.4
@@ -1028,39 +1060,39 @@ packages:
       d3-zoom: 3.0.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      zustand: 4.3.7(react@18.2.0)
+      zustand: 4.3.8(immer@10.0.2)(react@18.2.0)
     transitivePeerDependencies:
       - immer
     dev: false
 
-  /@reactflow/node-resizer@2.1.0(react-dom@18.2.0)(react@18.2.0):
+  /@reactflow/node-resizer@2.1.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-DVL8nnWsltP8/iANadAcTaDB4wsEkx2mOLlBEPNE3yc5loSm3u9l5m4enXRcBym61MiMuTtDPzZMyYYQUjuYIg==}
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@reactflow/core': 11.7.0(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/core': 11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
       classcat: 5.0.4
       d3-drag: 3.0.0
       d3-selection: 3.0.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      zustand: 4.3.7(react@18.2.0)
+      zustand: 4.3.8(immer@10.0.2)(react@18.2.0)
     transitivePeerDependencies:
       - immer
     dev: false
 
-  /@reactflow/node-toolbar@1.1.11(react-dom@18.2.0)(react@18.2.0):
+  /@reactflow/node-toolbar@1.1.11(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+hKtx+cvXwfCa9paGxE+G34rWRIIVEh68ZOqAtivClVmfqGzH/sEoGWtIOUyg9OEDNE1nEmZ1NrnpBGSmHHXFg==}
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@reactflow/core': 11.7.0(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/core': 11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
       classcat: 5.0.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      zustand: 4.3.7(react@18.2.0)
+      zustand: 4.3.8(immer@10.0.2)(react@18.2.0)
     transitivePeerDependencies:
       - immer
     dev: false
@@ -2721,6 +2753,10 @@ packages:
     engines: {node: '>= 4'}
     dev: false
 
+  /immer@10.0.2:
+    resolution: {integrity: sha512-Rx3CqeqQ19sxUtYV9CU911Vhy8/721wRFnJv3REVGWUmoAcIwzifTsdmJte/MV+0/XpM35LZdQMBGkRIoLPwQA==}
+    dev: false
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -3869,18 +3905,18 @@ packages:
       loose-envify: 1.4.0
     dev: false
 
-  /reactflow@11.7.0(react-dom@18.2.0)(react@18.2.0):
+  /reactflow@11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-bjfJV1iQZ+VwIlvsnd4TbXNs6kuJ5ONscud6fNkF8RY/oU2VUZpdjA3q1zwmgnjmJcIhxuBiBI5VLGajYx/Ozg==}
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@reactflow/background': 11.2.0(react-dom@18.2.0)(react@18.2.0)
-      '@reactflow/controls': 11.1.11(react-dom@18.2.0)(react@18.2.0)
-      '@reactflow/core': 11.7.0(react-dom@18.2.0)(react@18.2.0)
-      '@reactflow/minimap': 11.5.0(react-dom@18.2.0)(react@18.2.0)
-      '@reactflow/node-resizer': 2.1.0(react-dom@18.2.0)(react@18.2.0)
-      '@reactflow/node-toolbar': 1.1.11(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/background': 11.2.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/controls': 11.1.11(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/core': 11.7.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/minimap': 11.5.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/node-resizer': 2.1.0(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
+      '@reactflow/node-toolbar': 1.1.11(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
@@ -4614,8 +4650,8 @@ packages:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: false
 
-  /zustand@4.3.7(react@18.2.0):
-    resolution: {integrity: sha512-dY8ERwB9Nd21ellgkBZFhudER8KVlelZm8388B5nDAXhO/+FZDhYMuRnqDgu5SYyRgz/iaf8RKnbUs/cHfOGlQ==}
+  /zustand@4.3.8(immer@10.0.2)(react@18.2.0):
+    resolution: {integrity: sha512-4h28KCkHg5ii/wcFFJ5Fp+k1J3gJoasaIbppdgZFO4BPJnsNxL0mQXBSFgOgAdCdBj35aDTPvdAJReTMntFPGg==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       immer: '>=9.0'
@@ -4626,6 +4662,7 @@ packages:
       react:
         optional: true
     dependencies:
+      immer: 10.0.2
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false

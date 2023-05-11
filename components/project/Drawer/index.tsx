@@ -3,26 +3,21 @@ import { Field, NodeOption } from "@/components/project/nodes/customNodeTypes";
 import cx from "classnames";
 import * as Separator from "@radix-ui/react-separator";
 import { DynamicForm } from "@/components/DynamicForm";
+import { useRFState } from "../../../store/FlowStore";
+import { useDrawerStore } from "@/components/project/Drawer/store";
 
 type DrawerProps = {
   open: boolean;
   onClose: () => void;
   nodeOption?: NodeOption;
   nodeId?: string;
-  onChangeValue: (
-    nodeId: string,
-    categoryId: string,
-    valueId: string,
-    newValue: string,
-  ) => void;
 };
-export default function Drawer({
-  open,
-  onClose,
-  nodeOption,
-  onChangeValue,
-  nodeId,
-}: DrawerProps) {
+export default function Drawer() {
+  const drawerStore = useDrawerStore();
+  const { open, onClose, nodeId, nodeOption } = drawerStore;
+  const { onChangeValue } = useRFState((state) => ({
+    onChangeValue: state.onChangeValue,
+  }));
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Portal>

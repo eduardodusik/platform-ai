@@ -47,7 +47,7 @@ function Field({
         >
           <input
             type={field.type}
-            value={field.value as string}
+            defaultValue={field.value as string}
             onChange={(ev) => onChange(ev.target.value)}
           />
         </Form.Control>
@@ -70,7 +70,7 @@ function Field({
           )}
         >
           <textarea
-            value={field.value as string}
+            defaultValue={field.value as string}
             onChange={(ev) => onChange(ev.target.value)}
           />
         </Form.Control>
@@ -115,12 +115,6 @@ function Field({
           onChange={(ev) => onChange(ev.target.value)}
           defaultValue={field.value as string}
           placeholder={field?.placeholder}
-          // className={cx(
-          //   "box-border",
-          //   "focus:border-amber-700 focus:ring-0 ",
-          //   "rounded border-neutral-500 bg-transparent text-white",
-          //   "hover:border-amber-800",
-          // )}
         >
           <Select.Root defaultValue="gpt_response">
             <Select.Trigger asChild aria-label="Food">
@@ -145,12 +139,11 @@ function Field({
             <Select.Content
               side="bottom"
               position="popper"
-              className="mt-1 !min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg bg-white shadow-lg dark:bg-neutral-700"
+              className="mt-1 !min-w-[var(--radix-select-trigger-width)] rounded-lg bg-white shadow-lg dark:bg-neutral-700"
             >
               <ScrollArea.Root className="ScrollAreaRoot w-full">
                 <Select.Viewport asChild className="p-4">
                   <ScrollArea.Viewport className="ScrollAreaViewport">
-                    {/*<Select.Group>*/}
                     {[
                       "user_text_input",
                       "user_audio_input",
@@ -173,8 +166,6 @@ function Field({
                         <Select.ItemText>{f}</Select.ItemText>
                       </Select.Item>
                     ))}
-
-                    {/*</Select.Group>*/}
                   </ScrollArea.Viewport>
                 </Select.Viewport>
                 <ScrollArea.Scrollbar

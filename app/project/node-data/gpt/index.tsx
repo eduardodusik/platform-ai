@@ -2,6 +2,7 @@ import {
   NodeDataBase,
   NodeOption,
 } from "@/components/project/nodes/customNodeTypes";
+import { NODE_IDS_ENUM } from "@/app/project/node-data/NodeTypes";
 
 const GPT_AVAILABLE_CONFIG: NodeOption[] = [
   {
@@ -90,7 +91,7 @@ const GPT_AVAILABLE_CONFIG: NodeOption[] = [
 ];
 
 export const GPT_CONFIG: NodeDataBase = {
-  id: "GPT_OPEN_AI",
+  id: NODE_IDS_ENUM.GPT,
   name: "GPT",
   availableConfig: GPT_AVAILABLE_CONFIG,
   categories: [

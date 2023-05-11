@@ -2,6 +2,7 @@ import { ComponentType, ReactElement, ReactNode } from "react";
 import simpleNode from "@/components/project/nodes/simpleNode";
 import dynamic from "next/dynamic";
 import { IconType } from "react-icons/lib";
+import { NODE_IDS_ENUM } from "@/app/project/node-data/NodeTypes";
 
 type FieldType =
   | "text"
@@ -38,7 +39,7 @@ export type NodeOption = {
 };
 
 export type NodeDataBase = {
-  id: string;
+  id: NODE_IDS_ENUM;
   name: string;
   categories?: NodeOption[];
   availableConfig?: NodeOption[];
@@ -55,5 +56,5 @@ export type NodeAvailableConfig = NodeOption & {
   type: CustomNodesKeys;
 };
 
-export type CustomNodesKeys = "start" | "gpt";
+export type CustomNodesKeys = "gpt";
 export type NodeTypeMap = Record<CustomNodesKeys, typeof simpleNode>;
