@@ -45,6 +45,7 @@ export type NodeDataBase = {
   availableConfig?: NodeOption[];
   onEditName?: (nodeId: string, newName: string) => void;
   onOptionClick?: (nodeId: string, nodeOption: NodeOption) => void;
+  setVariableKey?: string;
   onConfigChange?: (
     nodeId: string,
     checked: boolean,

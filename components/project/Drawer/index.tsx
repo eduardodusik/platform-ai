@@ -1,3 +1,4 @@
+"use client";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Field, NodeOption } from "@/components/project/nodes/customNodeTypes";
 import cx from "classnames";

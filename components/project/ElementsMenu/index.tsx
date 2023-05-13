@@ -6,10 +6,10 @@ import {
   NodeDataBase,
 } from "@/components/project/nodes/customNodeTypes";
 import { NODE_IDS_ENUM } from "@/app/project/node-data/NodeTypes";
-import { useRFState } from "../../../store/FlowStore";
 import { Node, useReactFlow } from "reactflow";
 import { useCallback } from "react";
 import { AvailableNodes } from "@/app/project/node-data";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function ElementsMenu() {
   // const { onAddNode } = useRFState((state) => ({ onAddNode: state.onAddNode }));
@@ -75,27 +75,40 @@ function NodeItem({ name, icon, onAddNewNode }: NodeItemProps) {
       </Menubar.Trigger>
 
       <Menubar.Portal>
-        <Menubar.Content
-          align="start"
-          side="right"
-          sideOffset={16}
-          alignOffset={8}
-          className={cx(
-            "rdx-side-top:animate-slide-up rdx-side-bottom:animate-slide-down",
-            "w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56",
-            "bg-black dark:bg-black",
-          )}
-        >
-          <Menubar.Item
-            onClick={() => onAddNewNode("gpt", NODE_IDS_ENUM.GPT)}
-            className=" cursor-pointer rounded p-1 text-white hover:bg-neutral-900"
+        <AnimatePresence>
+          <Menubar.Content
+            align="start"
+            side="right"
+            sideOffset={16}
+            alignOffset={8}
+            asChild
           >
-            GPT
-          </Menubar.Item>
-          <Menubar.Item className="cursor-pointer rounded p-1 text-white hover:bg-neutral-900">
-            Whisper
-          </Menubar.Item>
-        </Menubar.Content>
+            <motion.div
+              className={cx(
+                "rdx-side-top:animate-slide-up rdx-side-bottom:animate-slide-down",
+                "w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56",
+                "bg-black dark:bg-black",
+              )}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{
+                scale: 1,
+                opacity: 1,
+                transition: { type: "spring", duration: 0.3 },
+              }}
+              exit={{ scale: 0, opacity: 0, transition: { duration: 0.1 } }}
+            >
+              <Menubar.Item
+                onClick={() => onAddNewNode("gpt", NODE_IDS_ENUM.GPT)}
+                className=" cursor-pointer rounded p-1 text-white hover:bg-neutral-900"
+              >
+                GPT
+              </Menubar.Item>
+              <Menubar.Item className="cursor-pointer rounded p-1 text-white hover:bg-neutral-900">
+                Whisper
+              </Menubar.Item>
+            </motion.div>
+          </Menubar.Content>
+        </AnimatePresence>
       </Menubar.Portal>
     </Menubar.Menu>
   );

@@ -1,17 +1,9 @@
 "use client";
 
-import {
-  Node,
-  ReactFlow,
-  Background,
-  useReactFlow,
-  ReactFlowProvider,
-} from "reactflow";
+import { Node, ReactFlow, Background, ReactFlowProvider } from "reactflow";
 import { neutral } from "tailwindcss/colors";
 import {
-  CustomNodesKeys,
   NodeDataBase,
-  NodeOption,
   NodeTypeMap,
 } from "@/components/project/nodes/customNodeTypes";
 import SimpleNode from "@/components/project/nodes/simpleNode";
@@ -19,6 +11,7 @@ import "reactflow/dist/style.css";
 import Drawer from "@/components/project/Drawer";
 import Menu from "@/components/project/menu";
 import { RFState, useRFState } from "../../../store/FlowStore";
+import { Suspense } from "react";
 
 type WorkflowProps = {
   nodeData: Node<NodeDataBase>[];
@@ -50,9 +43,6 @@ function WorkflowInstance() {
       >
         <Background gap={12} size={1} color={neutral[800]} />
       </ReactFlow>
-
-      <Menu />
-      <Drawer />
     </>
   );
 }
@@ -65,6 +55,8 @@ export default function ReactFlowComp() {
   return (
     <ReactFlowProvider>
       <WorkflowInstance />
+      <Menu />
+      <Drawer />
     </ReactFlowProvider>
   );
 }

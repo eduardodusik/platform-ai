@@ -20,9 +20,14 @@ import { GPT_CONFIG } from "@/app/project/node-data/gpt";
 import { produce } from "immer";
 import { devtools, persist } from "zustand/middleware";
 
+type Variable = {
+  key: string;
+};
+
 export interface RFState {
   nodes: Node<NodeDataBase>[];
   edges: Edge[];
+  variables: Variable[];
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -38,6 +43,8 @@ export interface RFState {
     checked: boolean,
     newCategory: NodeOption,
   ) => void;
+  onCreateNewVariable: (key: string, nodeId?: string) => void;
+  onLinkNodeWithVariable: (nodeId: string, variableKey: string) => void;
 }
 
 const nodes: Node<NodeDataBase>[] = [
@@ -55,9 +62,31 @@ export const useRFState = create<RFState>()(
       (set, get) => {
         const setState = (callback: (store: RFState) => void) =>
           set(produce(callback));
+
         return {
           nodes: nodes,
           edges: [],
+          variables: [
+            {
+              key: "Var",
+            },
+          ],
+          onLinkNodeWithVariable: (nodeId: string, variableKey: string) => {
+            setState((store) => {
+              const node = store.nodes.findIndex((n) => n.id === nodeId);
+              if (node > -1) {
+                console.log("change");
+                store.nodes[node].data.setVariableKey = variableKey;
+              }
+            });
+          },
+          onCreateNewVariable: (key: string) => {
+            setState((store) => {
+              store.variables.push({
+                key,
+              });
+            });
+          },
           onNodesChange: (changes: NodeChange[]) => {
             set({
               nodes: applyNodeChanges(changes, get().nodes),
