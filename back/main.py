@@ -1,16 +1,75 @@
-# This is a sample Python script.
+import os
+from typing import Union, Dict
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import openai
+from pydantic import BaseModel
+
+from nodes.Whisper import WhisperNode
+from nodes.GPT import ChatGPT, GPTAvailableConfig
+from fastapi import FastAPI
+
+app = FastAPI()
+
+os.environ["OPENAI_API_KEY"] = "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"
+openai.api_key = os.environ["OPENAI_API_KEY"]
+
+def testGpt():
+    template = "Voce é um especialista em {language} responda corretamente as questoes somente com o codigo, sem explicações:"
+    human = "Responda a questao: {question}"
+    test = ChatGPT(
+        prompt=human,
+        template=template,
+        system_input_variables={"language": "javascript"},
+        human_input_variables={"question": "fazer um lambda function"},
+        temperature=0
+    )
+    print(test.call())
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+# def main():
+#     testGpt()
+#
+#
+# if __name__ == '__main__':
+#     main()
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# @app.get("/")
+# async def read_root(template: str = None, prompt: str = None, system_input_variables: str = None,  human_input_variables: str  = None):
+#     # template = "Voce é um especialista em {language} responda corretamente as questoes somente com o codigo, sem explicações:"
+#     # human = "Responda a questao: {question}"
+#     print(system_input_variables)
+#     test = ChatGPT(
+#         prompt=prompt,
+#         template=template,
+#         system_input_variables=system_input_variables.items(),
+#         human_input_variables=human_input_variables.items(),
+#         temperature=0
+#     )
+#     response = test.call()
+#     return {"openAiResponse": response}
+#
+#
+#
+@app.post("/open-ai")
+async def read_item(item: GPTAvailableConfig):
+    test = ChatGPT(
+        prompt=item.prompt,
+        template=item.template,
+        system_input_variables=item.system_input_variables,
+        human_input_variables=item.human_input_variables,
+        temperature=0
+    )
+    response = test.call()
+    return {"openAiResponse": response}
+    # return {"openAiResponse": item}
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
+def main():
+    # print('teste')
+    whisper = WhisperNode()
+    response = whisper.call()
+    print(response)
+
+main()
