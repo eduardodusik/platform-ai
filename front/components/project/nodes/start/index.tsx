@@ -12,7 +12,7 @@ export default function NodeStart(props: NodeProps) {
           type="source"
           isConnectable={props.isConnectable}
           position={Position.Right}
-          id="y"
+          id="start-out"
           onConnect={(params) => console.log("handle onConnect", params)}
           className="mr-4 bg-green-800"
         />

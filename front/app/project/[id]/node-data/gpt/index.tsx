@@ -2,7 +2,7 @@ import {
   NodeDataBase,
   NodeOption,
 } from "@/components/project/nodes/customNodeTypes";
-import { NODE_IDS_ENUM } from "@/app/project/node-data/NodeTypes";
+import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
 
 const GPT_AVAILABLE_CONFIG: NodeOption[] = [
   {

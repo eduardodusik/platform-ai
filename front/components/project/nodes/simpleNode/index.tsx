@@ -81,7 +81,6 @@ export default function SimpleNode(props: NodeProps<NodeDataBase>) {
             name={value.name}
             nodeId={nodeId}
             id={value.id}
-            icon={value.icon}
             onClickOption={() => handleOptionClick(value)}
             values={value.values}
           />
@@ -155,7 +154,7 @@ type OptionProps = NodeOption & {
   onClickOption: () => void;
 };
 
-function Option({ name, onClickOption, icon }: OptionProps) {
+function Option({ name, onClickOption }: OptionProps) {
   return (
     <div
       onClick={onClickOption}
@@ -165,7 +164,6 @@ function Option({ name, onClickOption, icon }: OptionProps) {
         "transition-colors hover:bg-neutral-700/90 hover:shadow-md",
       )}
     >
-      {icon && icon({})}
       <span>{name}</span>
     </div>
   );

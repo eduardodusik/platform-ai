@@ -50,7 +50,13 @@ def testGpt():
 #     return {"openAiResponse": response}
 #
 #
+
 #
+
+@app.get("/")
+async def fun():
+    return {"message": "fHello Worlddf"}
+
 @app.post("/open-ai")
 async def read_item(item: GPTAvailableConfig):
     test = ChatGPT(
@@ -68,8 +74,8 @@ async def read_item(item: GPTAvailableConfig):
 
 def main():
     # print('teste')
-    whisper = WhisperNode()
-    response = whisper.call()
-    print(response)
+    # whisper = WhisperNode()
+    # response = whisper.call()
+    print("oibF")
 
 main()

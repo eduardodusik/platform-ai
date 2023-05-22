@@ -5,10 +5,10 @@ import {
   CustomNodesKeys,
   NodeDataBase,
 } from "@/components/project/nodes/customNodeTypes";
-import { NODE_IDS_ENUM } from "@/app/project/node-data/NodeTypes";
+import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
 import { Node, useReactFlow } from "reactflow";
 import { useCallback } from "react";
-import { AvailableNodes } from "@/app/project/node-data";
+import { AvailableNodes } from "@/app/project/[id]/node-data";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function ElementsMenu() {
@@ -98,7 +98,7 @@ function NodeItem({ name, icon, onAddNewNode }: NodeItemProps) {
               exit={{ scale: 0, opacity: 0, transition: { duration: 0.1 } }}
             >
               <Menubar.Item
-                onClick={() => onAddNewNode("gpt", NODE_IDS_ENUM.GPT)}
+                onClick={() => onAddNewNode( NODE_IDS_ENUM.GPT, NODE_IDS_ENUM.GPT)}
                 className=" cursor-pointer rounded p-1 text-white hover:bg-neutral-900"
               >
                 GPT

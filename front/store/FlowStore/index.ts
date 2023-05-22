@@ -16,17 +16,18 @@ import {
   NodeOption,
 } from "@/components/project/nodes/customNodeTypes";
 import { create } from "zustand";
-import { GPT_CONFIG } from "@/app/project/node-data/gpt";
 import { produce } from "immer";
-import { devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 
-type Variable = {
+export type Variable = {
   key: string;
 };
 
 export interface RFState {
   nodes: Node<NodeDataBase>[];
   edges: Edge[];
+  setNodes: (nodes: Node<NodeDataBase>[]) => void;
+  setEdges: (edges:Edge[]) => void;
   variables: Variable[];
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
@@ -47,30 +48,45 @@ export interface RFState {
   onLinkNodeWithVariable: (nodeId: string, variableKey: string) => void;
 }
 
-const nodes: Node<NodeDataBase>[] = [
-  {
-    id: "4",
-    type: "gpt",
-    position: { x: 200, y: 250 },
-    data: GPT_CONFIG,
-  },
-];
+// const nodes: Node<NodeDataBase>[] = [
+//   {
+//     id: self.crypto.randomUUID(),
+//     type: "start",
+//     position: { x: 100, y: 250 },
+//     data: START_CONFIG,
+//   },
+//   {
+//     id: "4",
+//     type: "gpt",
+//     position: { x: 200, y: 250 },
+//     data: GPT_CONFIG,
+//   },
+// ];
 
 export const useRFState = create<RFState>()(
   devtools(
-    persist(
       (set, get) => {
         const setState = (callback: (store: RFState) => void) =>
           set(produce(callback));
 
         return {
-          nodes: nodes,
+          nodes: [],
           edges: [],
           variables: [
             {
               key: "Var",
             },
           ],
+          setNodes: (nodes: Node<NodeDataBase>[]) => {
+            setState((store) => {
+              store.nodes = nodes;
+            });
+          },
+          setEdges: (edges: Edge[]) => {
+            setState((store) => {
+              store.edges = edges;
+            });
+          },
           onLinkNodeWithVariable: (nodeId: string, variableKey: string) => {
             setState((store) => {
               const node = store.nodes.findIndex((n) => n.id === nodeId);
@@ -181,9 +197,5 @@ export const useRFState = create<RFState>()(
           },
         };
       },
-      {
-        name: "storage",
-      },
-    ),
   ),
 );

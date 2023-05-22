@@ -1,31 +1,33 @@
-import { RxPlus } from "react-icons/rx";
 import cx from "classnames";
 import Link from "next/link";
+import { getProjects } from "@/app/api/auth/project/create-nodes";
+import NewProject from "@/components/dashboard/NewProject";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const projects = await getProjects();
+
   return (
     <div className="">
       <div className="flex justify-between">
         <div />
-        <Link href="/project" className={cx(
-          "text-sm px-4 border border-white py-2 rounded-md text-neutral-700 flex items-center gap-1 bg-white",
-                "hover:bg-neutral-900 hover:text-white transition-colors"
-          )}>
-          New Model
-          <RxPlus alignmentBaseline="middle" />
-        </Link>
+        <NewProject />
       </div>
 
       <div className="pt-8 grid grid-cols-2 gap-4">
-        <div className={cx(
-          "border border-neutral-500 rounded-md py-2 px-4 cursor-pointer",
-              "hover:shadow-2xl transition-shadow hover:border-2 hover:border-white"
-        )}>
-          <div className="h-10">
-          </div>
-          Modelo exemplo
-        </div>
+        {projects?.map((project) => (
+          <Link key={project.id} href={`/project/${project.id}`}>
+            <div className={cx(
+              "border border-neutral-500 rounded-md py-2 px-4 cursor-pointer",
+              "hover:shadow-2xl transition-shadow hover:border-2 hover:border-white",
+            )}>
+              <div className="h-10">
+              </div>
+              {project.name}
+            </div>
+          </Link>
+        ))}
       </div>
+
     </div>
-  )
+  );
 }

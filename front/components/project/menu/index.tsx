@@ -5,6 +5,7 @@ export default function Menu() {
   const { nodes, variables } = useRFState((state) => ({
     nodes: state.nodes,
     variables: state.variables,
+    edges: state.edges
   }));
 
   return (
