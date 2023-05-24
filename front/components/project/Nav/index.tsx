@@ -1,9 +1,9 @@
 "use client";
 import { useCallback } from "react";
 import { useRFState } from "../../../store/FlowStore";
-import { createProject } from "@/app/api/auth/project/create-nodes";
 import Link from "next/link";
-import { Project } from "@/app/api/auth/project/types";
+import { Project } from "@/app/api/project/types";
+import { createProject } from "@/app/api/project/create-nodes";
 
 type PageProps = {
   project: Project | null

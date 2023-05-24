@@ -2,7 +2,7 @@
 import cx from "classnames";
 import { RxPlus } from "react-icons/rx";
 import { useCallback } from "react";
-import { createNewProject } from "@/app/api/auth/project/create-nodes";
+import { createNewProject } from "@/app/api/project/create-nodes";
 import { useRouter } from "next/navigation";
 
 

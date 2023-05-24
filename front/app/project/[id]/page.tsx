@@ -1,8 +1,8 @@
 import ReactFlowComp from "@/components/project/ReactFlowInstance";
 import Nav from "@/components/project/Nav";
-import { findProject } from "@/app/api/auth/project/create-nodes";
 import { NodeDataBase } from "@/components/project/nodes/customNodeTypes";
 import { Edge, Node } from "reactflow";
+import { findProject } from "@/app/api/project/create-nodes";
 
 type props = {
   params: {

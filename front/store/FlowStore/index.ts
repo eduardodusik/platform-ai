@@ -26,6 +26,8 @@ export type Variable = {
   key: string;
 };
 
+type Cursor = { x: number; y: number };
+
 const client = createClient({
   publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY as string,
   throttle: 16, // Updates every 16ms === 60fps animation
@@ -34,6 +36,8 @@ const client = createClient({
 export interface RFState {
   nodes: Node<NodeDataBase>[];
   edges: Edge[];
+  cursor: Cursor;
+  setCursor: (cursor: Cursor) => void;
   setNodes: (nodes: Node<NodeDataBase>[]) => void;
   setEdges: (edges: Edge[]) => void;
   variables: Variable[];
@@ -77,8 +81,6 @@ export const useRFState = create<WithLiveblocks<RFState>>()(
       ((set, get) => {
         const setState = (callback: (store: RFState) => void) =>
           set(produce(callback));
-
-        console.log({ setState })
         return {
           nodes: [],
           edges: [],
@@ -93,6 +95,7 @@ export const useRFState = create<WithLiveblocks<RFState>>()(
               store.nodes = nodes;
             });
           },
+          setCursor: (cursor) => set({ cursor }),
           setEdges: (edges: Edge[]) => {
             setState((store) => {
               store.edges = edges;

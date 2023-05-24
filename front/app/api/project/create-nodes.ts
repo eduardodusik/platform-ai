@@ -1,10 +1,10 @@
 "use server";
 
-import { Edge, Node, Project } from "reactflow";
+import { Edge, Node } from "reactflow";
 import { NodeDataBase } from "@/components/project/nodes/customNodeTypes";
 import prisma from "@/lib/prisma";
-import { Variable } from "../../../../store/FlowStore";
-import Prisma from "@/lib/prisma";
+import { Project } from "@/app/api/project/types";
+import { Variable } from "../../../store/FlowStore";
 
 export async function getNodes() {
   return await prisma.node.findMany({
