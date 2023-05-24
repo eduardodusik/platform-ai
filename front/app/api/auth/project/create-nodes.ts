@@ -1,12 +1,36 @@
 "use server";
 
+import { Edge, Node, Project } from "reactflow";
+import { NodeDataBase } from "@/components/project/nodes/customNodeTypes";
 import prisma from "@/lib/prisma";
-import { Project } from "@/app/api/auth/project/types";
+import { Variable } from "../../../../store/FlowStore";
+import Prisma from "@/lib/prisma";
 
 export async function getNodes() {
   return await prisma.node.findMany({
     include: {
       values: true,
+    },
+  });
+}
+
+export async function createProject (projectId: string, nodes?: Node<NodeDataBase>[], edges?: Edge[], variables?: Variable[]) {
+  {}
+  return await prisma.project.upsert({
+    where: {
+      id: projectId,
+    },
+    create: {
+      name: 'Projeto teste',
+      nodesData: nodes,
+      edgesData: edges,
+      variablesData: variables
+
+    },
+    update: {
+      nodesData: nodes,
+      edgesData: edges,
+      variablesData: variables
     },
   });
 }
@@ -26,7 +50,7 @@ export async function findProject ({id}: {id: string}) {
     }
   });
 
-  return response as Project | null;
+  return response as unknown as Project || null;
 }
 
 export async function getProjects () {
