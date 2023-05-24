@@ -22,14 +22,14 @@ export async function createProject (projectId: string, nodes?: Node<NodeDataBas
     },
     create: {
       name: 'Projeto teste',
-      nodesData: nodes,
-      edgesData: edges,
+      nodesData: nodes as {},
+      edgesData: edges as {},
       variablesData: variables
 
     },
     update: {
-      nodesData: nodes,
-      edgesData: edges,
+      nodesData: nodes as {},
+      edgesData: edges as {},
       variablesData: variables
     },
   });

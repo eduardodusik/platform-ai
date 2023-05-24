@@ -64,8 +64,8 @@ function WorkflowInstance() {
             // connectionId is an integer that is incremented at every new connections
             // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
             color={COLORS[connectionId % COLORS.length]}
-            x={presence?.cursor?.x}
-            y={presence?.cursor?.y}
+            x={(presence?.cursor as {x: number, y: number}).x }
+            y={(presence?.cursor as {x: number, y: number}).y}
           />
         );
       })}
