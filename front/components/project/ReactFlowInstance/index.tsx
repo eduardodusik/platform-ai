@@ -13,20 +13,24 @@ import { RFState, useRFState } from "../../../store/FlowStore";
 import { useCallback, useEffect } from "react";
 import NodeStart from "@/components/project/nodes/start";
 import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
+import Cursor from "@/components/project/Cursor";
+import { WithLiveblocks } from "@liveblocks/zustand";
 
-const selector = (state: Partial<RFState>) => ({
+const selector = (state: WithLiveblocks<RFState>) => ({
   nodes: state.nodes,
   edges: state.edges,
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  liveblocks: state.liveblocks,
 });
 
 function WorkflowInstance() {
-  const { onConnect, onEdgesChange, onNodesChange, edges, nodes } =
+  const { onConnect, onEdgesChange, onNodesChange, edges, nodes, liveblocks: { room, others } } =
     useRFState(selector);
+
   return (
-    <>
+    <div className="w-full h-full" >
       <ReactFlow
         className="bg-neutral-900"
         nodes={nodes}
@@ -36,11 +40,36 @@ function WorkflowInstance() {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         proOptions={{ hideAttribution: true }}
+        onPointerMove={(event) => {
+          room?.updatePresence({
+            cursor: {
+              x: event.clientX,
+              y: event.clientY,
+            },
+          })
+        }}
         fitView
       >
         <Background gap={12} size={1} color={neutral[800]} />
       </ReactFlow>
-    </>
+
+      {others.map(({ connectionId, presence }) => {
+        if (presence.cursor === null) {
+          return null;
+        }
+
+        return (
+          <Cursor
+            key={`cursor-${connectionId}`}
+            // connectionId is an integer that is incremented at every new connections
+            // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
+            color={COLORS[connectionId % COLORS.length]}
+            x={presence?.cursor?.x}
+            y={presence?.cursor?.y}
+          />
+        );
+      })}
+    </div>
   );
 }
 
@@ -53,66 +82,39 @@ const nodeTypes: NodeTypeMap = {
 type ReactFlowCompProps = {
   nodes: Node<NodeDataBase>[],
   edges: Edge[]
+  projectId: string;
 }
-export default function ReactFlowComp({ nodes, edges }: ReactFlowCompProps) {
-  const { setNodes, setEdges } = useRFState(state => ({
+
+const COLORS = [
+  "#E57373",
+  "#9575CD",
+  "#4FC3F7",
+  "#81C784",
+  "#FFF176",
+  "#FF8A65",
+  "#F06292",
+  "#7986CB",
+];
+
+
+export default function ReactFlowComp({ nodes, edges, projectId }: ReactFlowCompProps) {
+  const { setNodes, setEdges, liveblocks: { enterRoom, leaveRoom, others, room } } = useRFState(state => ({
     setNodes: state.setNodes,
     setEdges: state.setEdges,
+    liveblocks: state.liveblocks,
   }));
 
-  console.log({ edges });
-
-  // const parseNodes = useCallback(() => {
-  //
-  //   const newNodes = nodes.map(node => {
-  //     const nodeTemplate = AvailableNodes[node.type as NODE_IDS_ENUM];
-  //     const configs = [...nodeTemplate?.availableConfig, ...nodeTemplate?.categories];
-  //
-  //     const newNode: Node<NodeDataBase> = {
-  //       id: node.id as string,
-  //       type: node.type as string,
-  //       position: {
-  //         x: node.positionX,
-  //         y: node.positionY,
-  //       },
-  //       data: {
-  //         id: node.type as NODE_IDS_ENUM,
-  //         name: node.name,
-  //         availableConfig: nodeTemplate.availableConfig?.filter(config => !node.values.some(value => value.categoryId === config.id)),
-  //         categories: configs
-  //           ?.filter(config => node.values.some(value => value.categoryId === config.id))
-  //           ?.map(category => {
-  //             return {
-  //               ...category,
-  //               values: category.values.map(item => ({
-  //                 ...item,
-  //                 value: node.values.find(value => value.categoryId === category.id && value.fieldKey === item.name)?.value
-  //               }))
-  //             }
-  //           }),
-  //       },
-  //     };
-  //     return newNode;
-  //
-  //   });
-  //
-  //   setNodes(newNodes);
-  // }, [nodes, setNodes]);
-
-  const parseNodes = useCallback(() => {
-    setNodes(nodes || []);
-    setEdges(edges || []);
-  }, [edges, nodes, setEdges, setNodes]);
 
   useEffect(() => {
-    parseNodes();
-  }, [parseNodes]);
+    enterRoom(projectId);
+    return () => leaveRoom(projectId);
+  }, [enterRoom, leaveRoom, projectId]);
 
   return (
-    <ReactFlowProvider>
-      <WorkflowInstance />
-      <Menu />
-      <Drawer />
-    </ReactFlowProvider>
+      <ReactFlowProvider>
+        <WorkflowInstance />
+        <Menu />
+        <Drawer />
+      </ReactFlowProvider>
   );
 }

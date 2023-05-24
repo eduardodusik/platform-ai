@@ -18,16 +18,24 @@ import {
 import { create } from "zustand";
 import { produce } from "immer";
 import { devtools } from "zustand/middleware";
+import { createClient } from "@liveblocks/client";
+import type { WithLiveblocks } from "@liveblocks/zustand";
+import { liveblocks } from "@liveblocks/zustand";
 
 export type Variable = {
   key: string;
 };
 
+const client = createClient({
+  publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY as string,
+  throttle: 16, // Updates every 16ms === 60fps animation
+});
+
 export interface RFState {
   nodes: Node<NodeDataBase>[];
   edges: Edge[];
   setNodes: (nodes: Node<NodeDataBase>[]) => void;
-  setEdges: (edges:Edge[]) => void;
+  setEdges: (edges: Edge[]) => void;
   variables: Variable[];
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
@@ -63,15 +71,18 @@ export interface RFState {
 //   },
 // ];
 
-export const useRFState = create<RFState>()(
+export const useRFState = create<WithLiveblocks<RFState>>()(
   devtools(
-      (set, get) => {
+    liveblocks(
+      ((set, get) => {
         const setState = (callback: (store: RFState) => void) =>
           set(produce(callback));
 
+        console.log({ setState })
         return {
           nodes: [],
           edges: [],
+          cursor: { x: 0, y: 0 },
           variables: [
             {
               key: "Var",
@@ -91,7 +102,6 @@ export const useRFState = create<RFState>()(
             setState((store) => {
               const node = store.nodes.findIndex((n) => n.id === nodeId);
               if (node > -1) {
-                console.log("change");
                 store.nodes[node].data.setVariableKey = variableKey;
               }
             });
@@ -196,6 +206,15 @@ export const useRFState = create<RFState>()(
             set({ nodes: newNodes });
           },
         };
+      }), {
+        // Add Liveblocks client
+        client,
+        presenceMapping: { cursor: true },
+        // Define the store properties that should be shared in real-time
+        storageMapping: {
+          nodes: true,
+          edges: true,
+        },
       },
-  ),
-);
+    ),
+  ));

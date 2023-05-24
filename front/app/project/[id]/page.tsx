@@ -16,6 +16,7 @@ export default async function ProjectPage({ params }: props) {
     <div style={{ width: "100vw", height: "100vh" }}>
       <Nav project={project} />
       <ReactFlowComp
+        projectId={params.id}
         nodes={project?.nodesData as unknown as Node<NodeDataBase>[]}
         edges={project?.edgesData as unknown as Edge[]}
       />
