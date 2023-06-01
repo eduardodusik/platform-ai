@@ -18,62 +18,62 @@ const GPT_AVAILABLE_CONFIG: NodeOption[] = [
       },
     ],
   },
-  {
-    id: "agents",
-    name: "Agents",
-    values: [
-      {
-        name: "agent-type",
-        label: "Agent type",
-        value: undefined,
-        defaultValue: undefined,
-        type: "select",
-        selectOptions: [
-          {
-            key: "",
-            value: undefined,
-          },
-          {
-            key: "zero-shot-react-description",
-            value: "zero-shot-react-description",
-          },
-          {
-            key: "react-docstore",
-            value: "react-docstore",
-          },
-          {
-            key: "self-ask-with-search",
-            value: "self-ask-with-search",
-          },
-          {
-            key: "conversational-react-description",
-            value: "conversational-react-description",
-          },
-        ],
-      },
-      {
-        name: "tools",
-        label: "Tools",
-        value: null,
-        defaultValue: null,
-        type: "select",
-        selectOptions: [
-          {
-            key: "",
-            value: undefined,
-          },
-          {
-            key: "serpapi",
-            value: "serpapi",
-          },
-          {
-            key: "llm-math",
-            value: "llm-math",
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   id: "agents",
+  //   name: "Agents",
+  //   values: [
+  //     {
+  //       name: "agent-type",
+  //       label: "Agent type",
+  //       value: undefined,
+  //       defaultValue: undefined,
+  //       type: "select",
+  //       selectOptions: [
+  //         {
+  //           key: "",
+  //           value: undefined,
+  //         },
+  //         {
+  //           key: "zero-shot-react-description",
+  //           value: "zero-shot-react-description",
+  //         },
+  //         {
+  //           key: "react-docstore",
+  //           value: "react-docstore",
+  //         },
+  //         {
+  //           key: "self-ask-with-search",
+  //           value: "self-ask-with-search",
+  //         },
+  //         {
+  //           key: "conversational-react-description",
+  //           value: "conversational-react-description",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       name: "tools",
+  //       label: "Tools",
+  //       value: null,
+  //       defaultValue: null,
+  //       type: "select",
+  //       selectOptions: [
+  //         {
+  //           key: "",
+  //           value: undefined,
+  //         },
+  //         {
+  //           key: "serpapi",
+  //           value: "serpapi",
+  //         },
+  //         {
+  //           key: "llm-math",
+  //           value: "llm-math",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
     id: "set-env",
     name: "Set env",

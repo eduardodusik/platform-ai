@@ -56,33 +56,21 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Node {
-  id        String  @id @default(cuid())
-  localId   String
-  name      String
-  type      String
-  positionX Float
-  positionY Float
-  values    Value[]
-}
-
-model Value {
-  id         String  @id @default(cuid())
-  categoryId String
-  fieldKey   String
-  value      String?
-  nodeId     String?
-  node       Node?   @relation(fields: [nodeId], references: [id])
-
-  @@index([nodeId])
-}
-
 model Project {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String
   nodesData     Json?
   edgesData     Json?
   variablesData Json?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  ApiSchema     ApiSchema[]
+}
+
+model ApiSchema {
+  id        String @id @default(cuid())
+  projectId String @unique
+  schema    Json
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }

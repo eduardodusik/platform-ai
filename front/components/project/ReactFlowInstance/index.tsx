@@ -10,11 +10,12 @@ import "reactflow/dist/style.css";
 import Drawer from "@/components/project/Drawer";
 import Menu from "@/components/project/menu";
 import { RFState, useRFState } from "../../../store/FlowStore";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import NodeStart from "@/components/project/nodes/start";
 import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
 import Cursor from "@/components/project/Cursor";
 import { WithLiveblocks } from "@liveblocks/zustand";
+import NewVariableDialog from "@/components/NewVariableDialog";
 
 const selector = (state: WithLiveblocks<RFState>) => ({
   nodes: state.nodes,
@@ -30,7 +31,7 @@ function WorkflowInstance() {
     useRFState(selector);
 
   return (
-    <div className="w-full h-full" >
+    <div className="w-full h-full">
       <ReactFlow
         className="bg-neutral-900"
         nodes={nodes}
@@ -46,7 +47,7 @@ function WorkflowInstance() {
               x: event.clientX,
               y: event.clientY,
             },
-          })
+          });
         }}
         fitView
       >
@@ -64,8 +65,8 @@ function WorkflowInstance() {
             // connectionId is an integer that is incremented at every new connections
             // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
             color={COLORS[connectionId % COLORS.length]}
-            x={(presence?.cursor as {x: number, y: number}).x }
-            y={(presence?.cursor as {x: number, y: number}).y}
+            x={(presence?.cursor as { x: number, y: number }).x}
+            y={(presence?.cursor as { x: number, y: number }).y}
           />
         );
       })}
@@ -97,24 +98,35 @@ const COLORS = [
 ];
 
 
-export default function ReactFlowComp({ nodes, edges, projectId }: ReactFlowCompProps) {
-  const { setNodes, setEdges, liveblocks: { enterRoom, leaveRoom, others, room } } = useRFState(state => ({
-    setNodes: state.setNodes,
-    setEdges: state.setEdges,
-    liveblocks: state.liveblocks,
-  }));
-
+export default function ReactFlowComp({ projectId }: ReactFlowCompProps) {
+  const { enterRoom, leaveRoom, isStorageLoading } = useRFState(state => state.liveblocks);
+  const reset = useRFState(state => state.reset);
+  const initial = useRef(false);
 
   useEffect(() => {
-    enterRoom(projectId);
+    if (!initial.current) {
+      reset();
+      initial.current = true;
+      enterRoom(projectId);
+      return;
+    }
     return () => leaveRoom(projectId);
-  }, [enterRoom, leaveRoom, projectId]);
+  }, [enterRoom, leaveRoom, projectId, reset]);
+
+  if (isStorageLoading) return (<div>Loading...</div>)
 
   return (
-      <ReactFlowProvider>
-        <WorkflowInstance />
-        <Menu />
-        <Drawer />
-      </ReactFlowProvider>
+    <Board />
+  );
+}
+
+
+export function Board() {
+  return (
+    <ReactFlowProvider>
+      <WorkflowInstance />
+      <Menu />
+      <Drawer />
+    </ReactFlowProvider>
   );
 }

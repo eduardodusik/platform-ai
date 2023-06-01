@@ -18,7 +18,7 @@ export default function ElementsMenu() {
   const onAddNode = useCallback(
     (nodeType: CustomNodesKeys, nodeId: NODE_IDS_ENUM) => {
       const newNode: Node<NodeDataBase> = {
-        id: self.crypto.randomUUID(),
+        id: crypto.randomUUID(),
         type: nodeType,
         position: { x: 200, y: 250 },
         data: structuredClone(AvailableNodes[nodeId]),

@@ -1,7 +1,8 @@
 import cx from "classnames";
 import Link from "next/link";
 import NewProject from "@/components/dashboard/NewProject";
-import { getProjects } from "@/app/api/project/create-nodes";
+
+import { getProjects } from "@/app/(actions)/project";
 
 export default async function Dashboard() {
   const projects = await getProjects();

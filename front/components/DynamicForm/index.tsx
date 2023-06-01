@@ -5,6 +5,7 @@ import * as Select from "@radix-ui/react-select";
 import { ChevronDownIcon } from "lucide-react";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import { useRFState } from "../../store/FlowStore";
+import { useVariableStore } from "@/components/NewVariableDialog";
 
 type DynamicFormProps = {
   fields: Field[];
@@ -127,10 +128,11 @@ type SetVariableProps = {
 };
 
 function SetVariable({ field, onChange }: SetVariableProps) {
-  const { onLinkNodeWithVariable, variables } = useRFState((store) => ({
-    onLinkNodeWithVariable: store.onLinkNodeWithVariable,
+  const { variables } = useRFState((store) => ({
     variables: store.variables,
   }));
+
+  const onOpenDialog = useVariableStore(state => state.onOpen)
 
   return (
     <Form.Field name={field.name} className="flex flex-col gap-1">
@@ -144,7 +146,6 @@ function SetVariable({ field, onChange }: SetVariableProps) {
           defaultValue={field?.value as string}
           onValueChange={(value) => {
             onChange(value);
-            onLinkNodeWithVariable(field.name, value);
           }}
         >
           <Select.Trigger asChild aria-label="Food">
@@ -196,6 +197,7 @@ function SetVariable({ field, onChange }: SetVariableProps) {
               <ScrollArea.Corner className="ScrollAreaCorner" />
             </ScrollArea.Root>
             <Select.Group
+              onClick={onOpenDialog}
               className={cx(
                 "flex cursor-pointer items-center justify-center border-t border-neutral-600 p-4 align-middle",
                 "hover:bg-neutral-600",

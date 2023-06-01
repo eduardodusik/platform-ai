@@ -13,7 +13,7 @@ export default function NavBar({ session }: { session: Session | null }) {
     <>
       <SignInModal />
       <div>
-        <div className="relative mx-5 flex h-16 max-w-screen-xl items-center justify-between xl:mx-auto">
+        <div className="relative flex h-16 w-full items-center justify-between">
           <Link href="/" className="flex items-center font-display text-2xl text-white">
             <Image
               src="/logo.png"

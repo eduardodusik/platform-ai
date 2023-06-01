@@ -21,6 +21,7 @@ import { devtools } from "zustand/middleware";
 import { createClient } from "@liveblocks/client";
 import type { WithLiveblocks } from "@liveblocks/zustand";
 import { liveblocks } from "@liveblocks/zustand";
+import { START_CONFIG } from "@/app/project/[id]/node-data/start";
 
 export type Variable = {
   key: string;
@@ -32,6 +33,8 @@ const client = createClient({
   publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY as string,
   throttle: 16, // Updates every 16ms === 60fps animation
 });
+
+
 
 export interface RFState {
   nodes: Node<NodeDataBase>[];
@@ -57,64 +60,48 @@ export interface RFState {
     newCategory: NodeOption,
   ) => void;
   onCreateNewVariable: (key: string, nodeId?: string) => void;
-  onLinkNodeWithVariable: (nodeId: string, variableKey: string) => void;
+  reset: () => void
 }
 
-// const nodes: Node<NodeDataBase>[] = [
-//   {
-//     id: self.crypto.randomUUID(),
-//     type: "start",
-//     position: { x: 100, y: 250 },
-//     data: START_CONFIG,
-//   },
-//   {
-//     id: "4",
-//     type: "gpt",
-//     position: { x: 200, y: 250 },
-//     data: GPT_CONFIG,
-//   },
-// ];
+const nodes: Node<NodeDataBase>[] = [
+  {
+    id: '1',
+    type: "START",
+    position: { x: 100, y: 250 },
+    data: START_CONFIG,
+  },
+];
+
+const initial_state = {
+  nodes: nodes,
+  edges: [],
+  cursor: { x: 0, y: 0 },
+  variables: [],
+}
 
 export const useRFState = create<WithLiveblocks<RFState>>()(
   devtools(
     liveblocks(
       ((set, get) => {
-        const setState = (callback: (store: RFState) => void) =>
-          set(produce(callback));
+        // const setState = (callback: (store: RFState) => void) =>
+        //   set(produce(callback));
         return {
-          nodes: [],
-          edges: [],
-          cursor: { x: 0, y: 0 },
-          variables: [
-            {
-              key: "Var",
-            },
-          ],
+          ...initial_state,
           setNodes: (nodes: Node<NodeDataBase>[]) => {
-            setState((store) => {
-              store.nodes = nodes;
+            set({
+              nodes: nodes,
             });
           },
           setCursor: (cursor) => set({ cursor }),
           setEdges: (edges: Edge[]) => {
-            setState((store) => {
-              store.edges = edges;
-            });
-          },
-          onLinkNodeWithVariable: (nodeId: string, variableKey: string) => {
-            setState((store) => {
-              const node = store.nodes.findIndex((n) => n.id === nodeId);
-              if (node > -1) {
-                store.nodes[node].data.setVariableKey = variableKey;
-              }
+            set({
+              edges: edges,
             });
           },
           onCreateNewVariable: (key: string) => {
-            setState((store) => {
-              store.variables.push({
-                key,
-              });
-            });
+            set({
+              variables: [...get().variables, { key }],
+            })
           },
           onNodesChange: (changes: NodeChange[]) => {
             set({
@@ -132,7 +119,6 @@ export const useRFState = create<WithLiveblocks<RFState>>()(
             });
           },
           onEditNodeName: (nodeId: string, newName: string) => {
-            console.log(nodeId, newName);
             set({
               nodes: get().nodes.map((node) => {
                 if (node.id === nodeId) {
@@ -154,24 +140,27 @@ export const useRFState = create<WithLiveblocks<RFState>>()(
             fieldKey: string,
             newValue: any,
           ) => {
-            console.log({ nodeId, categoryId, fieldKey, newValue });
-            setState((store) => {
-              const node = store.nodes.find((x) => x.id === nodeId);
-              if (node) {
-                const category = node.data.categories?.find(
-                  (item) => item.id === categoryId,
-                );
-                if (category) {
-                  const field = category.values.find(
-                    (item) => item.name === fieldKey,
-                  );
+            const newNodes = structuredClone(get().nodes);
+            const node = newNodes.find((n) => n.id === nodeId);
 
-                  if (field) {
-                    field.value = newValue;
-                  }
+            if (node) {
+              const category = node.data.categories?.find(
+                (item) => item.id === categoryId,
+              );
+              if (category) {
+                const field = category.values.find(
+                  (item) => item.name === fieldKey,
+                );
+
+                if (field) {
+                  field.value = newValue;
                 }
               }
+            }
+            set({
+              nodes: newNodes,
             });
+
           },
           addNewConfig: (
             nodeId: string,
@@ -208,6 +197,9 @@ export const useRFState = create<WithLiveblocks<RFState>>()(
             });
             set({ nodes: newNodes });
           },
+          reset: () => {
+            set(initial_state)
+          }
         };
       }), {
         // Add Liveblocks client
@@ -217,6 +209,7 @@ export const useRFState = create<WithLiveblocks<RFState>>()(
         storageMapping: {
           nodes: true,
           edges: true,
+          variables: true,
         },
       },
     ),
