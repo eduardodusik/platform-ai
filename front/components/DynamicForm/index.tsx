@@ -2,7 +2,7 @@ import { Field } from "@/components/project/nodes/customNodeTypes";
 import * as Form from "@radix-ui/react-form";
 import cx from "classnames";
 import * as Select from "@radix-ui/react-select";
-import { ChevronDownIcon } from "lucide-react";
+import { BiChevronDown } from "react-icons/all";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import { useRFState } from "../../store/FlowStore";
 import { useVariableStore } from "@/components/NewVariableDialog";
@@ -161,7 +161,7 @@ function SetVariable({ field, onChange }: SetVariableProps) {
                 <Select.Value />
               </div>
               <Select.Icon className="ml-2">
-                <ChevronDownIcon />
+                <BiChevronDown />
               </Select.Icon>
             </button>
           </Select.Trigger>
