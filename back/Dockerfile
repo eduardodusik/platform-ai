@@ -7,6 +7,8 @@ WORKDIR /app
 # Copia o arquivo requirements.txt para o diretório de trabalho
 COPY requirements.txt .
 
+RUN sudo apt-get install default-libmysqlclient-dev build-essential
+
 # Instala as dependências
 RUN pip install --no-cache-dir -r requirements.txt
 
