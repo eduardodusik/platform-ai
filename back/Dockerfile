@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN apt-get update 
-RUN apt-get install default-libmysqlclient-dev build-essential
+RUN apt-get install -y default-libmysqlclient-dev build-essential
 
 
 # Instala as dependências
