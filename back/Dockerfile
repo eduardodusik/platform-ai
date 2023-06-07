@@ -8,7 +8,8 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN apt-get update 
-RUN apt-get install mysql-server default-libmysqlclient-dev build-essential
+RUN apt-get install default-libmysqlclient-dev build-essential
+
 
 # Instala as dependências
 RUN pip install --no-cache-dir -r requirements.txt
