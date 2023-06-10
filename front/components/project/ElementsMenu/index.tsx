@@ -103,7 +103,9 @@ function NodeItem({ name, icon, onAddNewNode }: NodeItemProps) {
               >
                 GPT
               </Menubar.Item>
-              <Menubar.Item className="cursor-pointer rounded p-1 text-white hover:bg-neutral-900">
+              <Menubar.Item
+                onClick={() => onAddNewNode( NODE_IDS_ENUM.WHISPER, NODE_IDS_ENUM.WHISPER)}
+                className="cursor-pointer rounded p-1 text-white hover:bg-neutral-900">
                 Whisper
               </Menubar.Item>
             </motion.div>

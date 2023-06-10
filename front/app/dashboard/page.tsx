@@ -2,10 +2,21 @@ import cx from "classnames";
 import Link from "next/link";
 import NewProject from "@/components/dashboard/NewProject";
 
-import { getProjects } from "@/app/(actions)/project";
+import { Project } from "@/app/api/project/types";
+import { GET } from "@/app/api/project/route";
+
+async function getData(): Promise<Project[]> {
+    const res = await GET();
+
+    if(!res.ok) {
+      throw new Error("Error on fetching");
+    }
+
+    return res.json()
+}
 
 export default async function Dashboard() {
-  const projects = await getProjects();
+  const projects = await getData();
 
   return (
     <div className="">

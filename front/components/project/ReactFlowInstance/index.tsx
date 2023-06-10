@@ -77,6 +77,7 @@ function WorkflowInstance() {
 const nodeTypes: NodeTypeMap = {
   [NODE_IDS_ENUM.GPT]: SimpleNode,
   [NODE_IDS_ENUM.START]: NodeStart,
+  [NODE_IDS_ENUM.WHISPER]: SimpleNode,
 };
 
 

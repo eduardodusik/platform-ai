@@ -39,13 +39,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  UserProject   UserProject[]
+  Project       Project[]
 }
 
 model VerificationToken {
@@ -57,20 +59,55 @@ model VerificationToken {
 }
 
 model Project {
-  id            String      @id @default(cuid())
-  name          String
-  nodesData     Json?
-  edgesData     Json?
-  variablesData Json?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  ApiSchema     ApiSchema[]
+  id        String      @id @default(cuid())
+  name      String
+  ownerId   String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  ApiSchema ApiSchema[]
+  ApiKey    ApiKey?
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+}
+
+model Versions {
+  id          String @id @default(cuid())
+  projectId   String
+  schemaId    String
+  description String
+
+  schema ApiSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+
+  @@index([schemaId])
+}
+
+model UserProject {
+  id        String @id @default(cuid())
+  projectId String
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ApiKey {
+  id        String @id @default(cuid())
+  projectId String @unique
+  key       String @unique @default(cuid())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model ApiSchema {
   id        String @id @default(cuid())
-  projectId String @unique
+  projectId String
   schema    Json
 
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project  Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  Versions Versions[]
+
+  @@index([projectId])
 }

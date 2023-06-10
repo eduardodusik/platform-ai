@@ -97,13 +97,13 @@ export default function SimpleNode(props: NodeProps<NodeDataBase>) {
   );
 }
 
-type AvailableConfigMenuProps = {
+export type AvailableConfigMenuProps = {
   configs?: NodeOption[];
   onConfigChange: (checked: boolean, config: NodeOption) => void;
   addedConfigs?: NodeOption[];
 };
 
-function AvailableConfigMenu({
+export function AvailableConfigMenu({
   configs,
   onConfigChange,
   addedConfigs,
@@ -149,12 +149,12 @@ function AvailableConfigMenu({
   );
 }
 
-type OptionProps = NodeOption & {
+export type OptionProps = NodeOption & {
   nodeId: string;
   onClickOption: () => void;
 };
 
-function Option({ name, onClickOption }: OptionProps) {
+export function Option({ name, onClickOption }: OptionProps) {
   return (
     <div
       onClick={onClickOption}

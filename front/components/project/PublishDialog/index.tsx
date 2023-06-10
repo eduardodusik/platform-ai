@@ -34,7 +34,7 @@ export default function PublishDialog({ projectId }: props) {
     edges: state.edges,
   }));
 
-  const onPublish = useCallback(async () => {
+  const onPublish = useCallback(async (description: string) => {
     // createProject(project?.id as string, nodes, edges, variables)
     try {
       setLoading(true)
@@ -43,6 +43,7 @@ export default function PublishDialog({ projectId }: props) {
         body: JSON.stringify({
           nodes,
           edges,
+          description: description,
         }),
       });
     } catch (err) {
@@ -54,7 +55,7 @@ export default function PublishDialog({ projectId }: props) {
   }, [edges, projectId, nodes]);
 
   const handleAdd = useCallback((data: { [key: string]: FormDataEntryValue }) => {
-    onPublish()
+    onPublish(data.versionName as string)
   }, [onPublish]);
 
   return (

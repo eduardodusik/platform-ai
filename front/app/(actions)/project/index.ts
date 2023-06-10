@@ -2,36 +2,36 @@
 
 import prisma from "@/lib/prisma";
 import { Project } from "@/app/api/project/types";
-import { Edge, Node } from "reactflow";
-import { NodeDataBase } from "@/components/project/nodes/customNodeTypes";
-import { Variable } from "../../../store/FlowStore";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { cookies, headers } from 'next/headers';
+import { getServerSession as originalGetServerSession } from 'next-auth';
 
-export async function createProject(projectId: string, nodes?: Node<NodeDataBase>[], edges?: Edge[], variables?: Variable[]) {
-  return await prisma.project.upsert({
-    where: {
-      id: projectId,
-    },
-    create: {
-      name: "Projeto teste",
-      nodesData: nodes as {},
-      edgesData: edges as {},
-      variablesData: variables,
+export const getServerSession = async () => {
+  const req = {
+    headers: Object.fromEntries(headers() as Headers),
+    cookies: Object.fromEntries(
+      cookies()
+        .getAll()
+        .map((c) => [c.name, c.value]),
+    ),
+  };
+  const res = { getHeader() {}, setCookie() {}, setHeader() {} };
 
-    },
-    update: {
-      nodesData: nodes as {},
-      edgesData: edges as {},
-      variablesData: variables,
-    },
-  });
-}
+  // @ts-ignore - The type used in next-auth for the req object doesn't match, but it still works
+  const session = await originalGetServerSession(req, res, authOptions);
+  return session;
+};
 
 export async function createNewProject() {
-  return await prisma.project.create({
-    data: {
-      name: "Projeto teste",
-    },
-  });
+  const session = await getServerSession();
+
+  if (session)
+    return await prisma.project.create({
+      data: {
+        name: "Projeto teste",
+        ownerId: session?.user.id,
+      },
+    });
 }
 
 export async function findProject({ id }: { id: string }) {
@@ -45,5 +45,14 @@ export async function findProject({ id }: { id: string }) {
 }
 
 export async function getProjects() {
-  return await prisma.project.findMany() as unknown as Project[];
+  const session = await originalGetServerSession(authOptions);
+  console.log("session", session);
+  const response = await prisma.project.findMany({
+    where: {
+      ownerId: session?.user.id,
+    },
+  }) as unknown as Project[];
+  console.log(response);
+  return response;
+//   @TODO: Retornar erro quando nao existe sessao
 }
