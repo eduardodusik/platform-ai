@@ -22,8 +22,6 @@ export default async function ProjectPage({ params }: props) {
       <PublishDialog projectId={params?.id} />
       <ReactFlowComp
         projectId={params.id}
-        nodes={project?.nodesData as unknown as Node<NodeDataBase>[]}
-        edges={project?.edgesData as unknown as Edge[]}
       />
     </div>
   );

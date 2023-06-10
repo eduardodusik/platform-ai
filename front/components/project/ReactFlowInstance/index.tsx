@@ -82,8 +82,6 @@ const nodeTypes: NodeTypeMap = {
 
 
 type ReactFlowCompProps = {
-  nodes: Node<NodeDataBase>[],
-  edges: Edge[]
   projectId: string;
 }
 
