@@ -1,34 +1,38 @@
+"use client";
+
 import ElementsMenu from "@/components/project/ElementsMenu";
-import { useRFState } from "../../../store/FlowStore";
+import { RxStack, IoIosSettings } from "react-icons/all";
+import cx from "classnames";
+import Tooltip from "@/components/shared/tooltip";
 
 export default function Menu() {
-  const { nodes, variables } = useRFState((state) => ({
-    nodes: state.nodes,
-    variables: state.variables,
-    edges: state.edges
-  }));
-
   return (
     <div className="fixed left-0 top-10 flex h-full items-center gap-3">
-      <div className="h-full w-52 border-r border-neutral-700 bg-neutral-900">
-        <div className="p-3">
-          <section className="pt-4">
-            <div className="font-bold">Variables</div>
-            <div className="flex flex-col pt-2">
-              {variables?.map((val) => (
-                <div key={val.key}>{val.key}</div>
-              ))}
-            </div>
-          </section>
+      <div className="h-full w-16 border-r border-neutral-700 bg-black">
+        <div className="flex flex-col gap-8 items-center justify-start pt-28 h-full">
+          <div className={cx(
+            "cursor-pointer"
+          )}>
+            <Tooltip content="Workflow">
+              <button className={cx(
+                "text-amber-700 text-xl"
+              )}>
+                <RxStack />
+              </button>
+            </Tooltip>
+          </div>
 
-          <section className="pt-4">
-            <div className="font-bold">Nodes</div>
-            <div className="flex flex-col gap-1 pt-2">
-              {nodes?.map((node) => (
-                <div key={node.id}>{node.data.name}</div>
-              ))}
-            </div>
-          </section>
+          <div className={cx(
+            "cursor-pointer"
+          )}>
+            <Tooltip content="Settings">
+              <button className={cx(
+                "text-amber-700 text-xl"
+              )}>
+                <IoIosSettings />
+              </button>
+            </Tooltip>
+          </div>
         </div>
       </div>
       <ElementsMenu />

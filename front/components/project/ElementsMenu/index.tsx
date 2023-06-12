@@ -1,3 +1,5 @@
+"use client";
+
 import cx from "classnames";
 import { BsBodyText, HiSparkles, SiOpenai } from "react-icons/all";
 import * as Menubar from "@radix-ui/react-menubar";

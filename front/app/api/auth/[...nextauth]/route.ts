@@ -12,12 +12,19 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
+    async session({ session, user, token }) {
       // Send properties to the client, like an access_token from a provider.
-      session.user.id = user.id
+      session.user.id = user?.id
       return session
     }
-  }
+  },
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/login",
+    signOut: "/",
+  },
 };
 
 const handler = NextAuth(authOptions);

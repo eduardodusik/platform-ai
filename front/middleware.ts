@@ -1,8 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
+// import { NextRequest, NextResponse } from "next/server";
+// import { withAuth } from "next-auth/middleware"
 
-export function middleware(request: NextRequest) {
-  return NextResponse.redirect(new URL('/404', request.url))
-}
+export { default } from "next-auth/middleware"
+
+// export default withAuth({
+//   callbacks: {
+//     authorized({ token }) {
+//       console.log({token})
+//       return !!token
+//     },
+//   },
+// })
+
 
 
 export const config = { matcher: ["/dashboard/:path*", "/project/:path*"] }
