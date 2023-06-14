@@ -39,7 +39,7 @@ export async function createNewProject() {
   });
 
   if (projectCrated.id) {
-    await prisma.userProject.create({
+    return await prisma.userProject.create({
       data: {
         userId: session?.user?.id,
         projectId: projectCrated.id,
