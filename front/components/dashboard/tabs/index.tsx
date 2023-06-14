@@ -7,7 +7,7 @@ import Link from "next/link";
 import {useSelectedLayoutSegment} from "next/navigation";
 
 const menuList = [
-  {label: 'Overview', href: '/dashboard', target: null},
+  {label: 'Projects', href: '/dashboard', target: null},
   {label: 'test', href: '/dashboard/test', target: 'test'},
 ]
 export default function DashboardTabs() {

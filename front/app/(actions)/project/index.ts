@@ -5,6 +5,7 @@ import { Project } from "@/app/api/project/types";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { cookies, headers } from 'next/headers';
 import { getServerSession as originalGetServerSession } from 'next-auth';
+import { NextResponse } from "next/server";
 
 export const getServerSession = async () => {
   const req = {
@@ -24,7 +25,7 @@ export const getServerSession = async () => {
 
 export async function createNewProject() {
   const session = await getServerSession();
-
+  console.log('session', session)
   if (session)
     return await prisma.project.create({
       data: {
@@ -44,15 +45,16 @@ export async function findProject({ id }: { id: string }) {
   return response as unknown as Project || null;
 }
 
+
 export async function getProjects() {
   const session = await originalGetServerSession(authOptions);
-  console.log("session", session);
+  if (!session?.user?.id) throw new Error("No session found");
+
   const response = await prisma.project.findMany({
     where: {
-      ownerId: session?.user.id,
+      ownerId: session?.user?.id,
     },
   }) as unknown as Project[];
-  console.log(response);
   return response;
 //   @TODO: Retornar erro quando nao existe sessao
 }

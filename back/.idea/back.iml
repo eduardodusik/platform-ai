@@ -7,4 +7,9 @@
     <orderEntry type="jdk" jdkName="Python 3.11 (back) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="$MODULE_DIR$/requirements.txt" />
+    <option name="removeUnused" value="true" />
+    <option name="keepMatchingSpecifier" value="false" />
+  </component>
 </module>

@@ -12,14 +12,60 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile}) {
+      if (!user.email) {
+        return false;
+      }
+      if (account?.provider === "google") {
+        const userExists = await prisma.user.findUnique({
+          where: { email: user.email },
+          select: { name: true },
+        });
+        // if the user already exists via email,
+        // update the user with their name and image from Google
+        if (userExists && !userExists.name) {
+          await prisma.user.update({
+            where: { email: user.email },
+            data: {
+              name: profile?.name,
+              // @ts-ignore - this is a bug in the types, `picture` is a valid on the `Profile` type
+              image: profile?.picture,
+            },
+          });
+        }
+      }
+      return true;
+    },
+    async jwt({ token, user, trigger }) {
+      if (!token.email) {
+        return {};
+      }
+      if (user) {
+        token.user = user;
+      }
+      if (trigger === "update") {
+        const refreshedUser = await prisma.user.findUnique({
+          where: { id: token.sub },
+        });
+        token.user = refreshedUser;
+        token.name = refreshedUser?.name;
+        token.email = refreshedUser?.email;
+        token.image = refreshedUser?.image;
+      }
+      return token;
+    },
     async session({ session, user, token }) {
-      // Send properties to the client, like an access_token from a provider.
-      session.user.id = user?.id
-      return session
+      session.user = {
+        // @ts-ignore
+        id: token.sub,
+        ...session.user,
+      };
+      return session;
     }
   },
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60
   },
   pages: {
     signIn: "/login",
