@@ -16,6 +16,7 @@ import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
 import Cursor from "@/components/project/Cursor";
 import { WithLiveblocks } from "@liveblocks/zustand";
 import NewVariableDialog from "@/components/NewVariableDialog";
+import ElementsMenu from "@/components/project/ElementsMenu";
 
 const selector = (state: WithLiveblocks<RFState>) => ({
   nodes: state.nodes,
@@ -112,7 +113,7 @@ export default function ReactFlowComp({ projectId }: ReactFlowCompProps) {
     return () => leaveRoom(projectId);
   }, [enterRoom, leaveRoom, projectId, reset]);
 
-  if (isStorageLoading) return (<div>Loading...</div>)
+  if (isStorageLoading) return (<div>Loading...</div>);
 
   return (
     <Board />
@@ -124,7 +125,7 @@ export function Board() {
   return (
     <ReactFlowProvider>
       <WorkflowInstance />
-      <Menu />
+      {/*<ElementsMenu />*/}
       <Drawer />
     </ReactFlowProvider>
   );

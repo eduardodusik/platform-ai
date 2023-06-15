@@ -34,6 +34,7 @@ export default function ElementsMenu() {
     <Menubar.Root>
       <div
         className={cx(
+          "absolute left-0 top-1/2",
           "flex flex-col gap-4 rounded-2xl bg-black p-3",
           "hover:shadow-lg hover:shadow-amber-800/5",
         )}
