@@ -1,5 +1,6 @@
 import simpleNode from "@/components/project/nodes/simpleNode";
 import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
+import { ReactNode } from "react";
 
 type FieldType =
   | "text"
@@ -48,4 +49,4 @@ export type NodeAvailableConfig = NodeOption & {
 };
 
 export type CustomNodesKeys = NODE_IDS_ENUM;
-export type NodeTypeMap = Record<CustomNodesKeys, typeof simpleNode>;
+export type NodeTypeMap = Record<CustomNodesKeys, any>;

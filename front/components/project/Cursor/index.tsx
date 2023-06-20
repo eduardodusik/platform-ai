@@ -2,16 +2,19 @@ type Props = {
   color: string;
   x: number;
   y: number;
+  scale: number
 };
 
-export default function Cursor({ color, x, y }: Props) {
+export default function Cursor({ color, x, y, scale = 0}: Props) {
+  console.log({ scale })
   return (
     <svg
       style={{
         position: "absolute",
         left: 0,
         top: 0,
-        transform: `translateX(${x}px) translateY(${y}px)`,
+        zIndex: '20',
+        transform: `translateX(${x}px) translateY(${y}px) scale(${scale})`,
       }}
       width="24"
       height="36"

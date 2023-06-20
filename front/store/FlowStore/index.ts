@@ -22,6 +22,7 @@ import { createClient } from "@liveblocks/client";
 import type { WithLiveblocks } from "@liveblocks/zustand";
 import { liveblocks } from "@liveblocks/zustand";
 import { START_CONFIG } from "@/app/project/[id]/node-data/start";
+import { StartData } from "@/components/project/nodes/start/start.type";
 
 export type Variable = {
   key: string;
@@ -60,12 +61,15 @@ export interface RFState {
     newCategory: NodeOption,
   ) => void;
   onCreateNewVariable: (key: string, nodeId?: string) => void;
+  onAddInitialParameter: () => number;
+  onUpdateInitialParameter: (index: number, newValue: string) => void;
+  onRemoveInitialParameter: (index: number) => void;
   reset: () => void
 }
 
-const nodes: Node<NodeDataBase>[] = [
+const nodes: Node[] = [
   {
-    id: '1',
+    id: 'START',
     type: "START",
     position: { x: 100, y: 250 },
     data: START_CONFIG,
@@ -199,7 +203,43 @@ export const useRFState = create<WithLiveblocks<RFState>>()(
           },
           reset: () => {
             set(initial_state)
-          }
+          },
+          onAddInitialParameter: () => {
+            let newNodes = structuredClone(get().nodes)
+            const startIndex = newNodes.findIndex((node) => node.type === 'START')
+            if (startIndex !== -1) {
+              (newNodes[startIndex].data as unknown as StartData).parameters.push(
+                {
+                  name: 'new_parameter',
+                }
+              )
+            }
+            set({
+              nodes: newNodes,
+            })
+
+            return (newNodes[startIndex].data as unknown as StartData).parameters.length - 1
+          },
+          onUpdateInitialParameter: (index: number, newValue) => {
+            let newNodes = structuredClone(get().nodes)
+            const startIndex = newNodes.findIndex((node) => node.type === 'START')
+            if (startIndex !== -1) {
+              (newNodes[startIndex].data as unknown as StartData).parameters[index].name = newValue
+              set({
+                nodes: newNodes,
+              })
+            }
+          },
+          onRemoveInitialParameter: (index) => {
+            let newNodes = structuredClone(get().nodes)
+            const startIndex = newNodes.findIndex((node) => node.type === 'START')
+            if (startIndex !== -1) {
+              (newNodes[startIndex].data as unknown as StartData).parameters.splice(index, 1)
+              set({
+                nodes: newNodes,
+              })
+            }
+          },
         };
       }), {
         // Add Liveblocks client

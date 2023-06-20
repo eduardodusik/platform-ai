@@ -2,8 +2,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { findProject } from "@/app/(actions)/project";
-import Nav from "@/components/project/Nav";
 import NewVariableDialog from "@/components/NewVariableDialog";
 import PublishDialog from "@/components/project/PublishDialog";
 import Menu from "@/components/project/menu";
@@ -32,12 +30,10 @@ export default async function ProjectLayout({ children, params }: {
   children: React.ReactNode;
 } & props) {
   await checkUserProject({ id: params.id });
-  const project = await findProject({ id: params.id });
 
   return (
-    <div className="h-full w-full text-white">
+    <div className="h-full w-full text-white bg-neutral-900">
       <div className="relative" style={{ width: "100vw", height: "100vh" }}>
-        <Nav project={project} />
         <NewVariableDialog />
         <PublishDialog projectId={params?.id} />
         {children}
@@ -46,3 +42,5 @@ export default async function ProjectLayout({ children, params }: {
     </div>
   );
 }
+
+
