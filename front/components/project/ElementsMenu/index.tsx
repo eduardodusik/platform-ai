@@ -19,7 +19,7 @@ export default function ElementsMenu() {
 
   const onAddNode = useCallback(
     (nodeType: CustomNodesKeys, nodeId: NODE_IDS_ENUM) => {
-      const newNode: Node<NodeDataBase> = {
+      const newNode: Node = {
         id: crypto.randomUUID(),
         type: nodeType,
         position: { x: 200, y: 250 },
