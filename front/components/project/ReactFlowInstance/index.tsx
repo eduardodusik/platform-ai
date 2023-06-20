@@ -9,7 +9,7 @@ import SimpleNode from "@/components/project/nodes/simpleNode";
 import "reactflow/dist/style.css";
 import Drawer from "@/components/project/Drawer";
 import { RFState, useRFState } from "../../../store/FlowStore";
-import { useCallback, useEffect, useRef } from "react";
+import { MouseEvent, useCallback, useEffect, useRef } from "react";
 import NodeStart from "@/components/project/nodes/start";
 import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
 import Cursor from "@/components/project/Cursor";
@@ -31,7 +31,7 @@ function WorkflowInstance() {
 
   const reactFlowRef = useReactFlow();
 
-  const onPaneMouseMove = useCallback((event) => {
+  const onPaneMouseMove = useCallback((event: MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const position = reactFlowRef.project({
       x: event.clientX - rect.top,
