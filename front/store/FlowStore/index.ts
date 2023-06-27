@@ -18,7 +18,7 @@ import {
 import { create } from "zustand";
 import { produce } from "immer";
 import { devtools } from "zustand/middleware";
-import { createClient } from "@liveblocks/client";
+import { BaseUserMeta, createClient } from "@liveblocks/client";
 import type { WithLiveblocks } from "@liveblocks/zustand";
 import { liveblocks } from "@liveblocks/zustand";
 import { START_CONFIG } from "@/app/project/[id]/node-data/start";
@@ -31,8 +31,9 @@ export type Variable = {
 type Cursor = { x: number; y: number };
 
 const client = createClient({
-  publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY as string,
-  throttle: 16, // Updates every 16ms === 60fps animation
+  // publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY as string,
+  throttle: 16, // Updates every 16ms === 60fps animation,
+  authEndpoint: '/api/live-auth',
 });
 
 
@@ -83,7 +84,20 @@ const initial_state = {
   variables: [],
 }
 
-export const useRFState = create<WithLiveblocks<RFState>>()(
+export type Presence = {
+  cursor: {
+    x: number,
+    y: number
+  }
+}
+
+export interface UserMeta extends BaseUserMeta {
+  name: string;
+  color: string;
+  image: string;
+}
+
+export const useRFState = create<WithLiveblocks<RFState, Presence, {}, UserMeta>>()(
   devtools(
     liveblocks(
       ((set, get) => {

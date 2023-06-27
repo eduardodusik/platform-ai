@@ -100,7 +100,7 @@ export function useDrawerConfig() {
         setDrawerIsOpen={onCloseDrawerConfig}
       />
     );
-  }, [showDrawerConfig]);
+  }, [onCloseDrawerConfig, parameterIndex, showDrawerConfig]);
 
   return useMemo(() => ({
     onOpenDrawerConfig,

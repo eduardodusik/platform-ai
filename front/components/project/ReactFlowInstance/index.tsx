@@ -8,13 +8,14 @@ import {
 import SimpleNode from "@/components/project/nodes/simpleNode";
 import "reactflow/dist/style.css";
 import Drawer from "@/components/project/Drawer";
-import { RFState, useRFState } from "../../../store/FlowStore";
+import { Presence, RFState, useRFState, UserMeta } from "../../../store/FlowStore";
 import { MouseEvent, useCallback, useEffect, useRef } from "react";
 import NodeStart from "@/components/project/nodes/start";
 import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
 import Cursor from "@/components/project/Cursor";
 import { liveblocks, WithLiveblocks } from "@liveblocks/zustand";
 import ElementsMenu from "@/components/project/ElementsMenu";
+import { createPortal } from "react-dom";
 
 const selector = (state: WithLiveblocks<RFState>) => ({
   nodes: state.nodes,
@@ -30,14 +31,12 @@ function WorkflowInstance() {
     useRFState(selector);
 
   const reactFlowRef = useReactFlow();
-
   const onPaneMouseMove = useCallback((event: MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const position = reactFlowRef.project({
       x: event.clientX - rect.top,
       y: event.clientY - rect.left,
     });
-    console.log(position);
     room?.updatePresence({
       cursor: {
         x: position.x,
@@ -61,23 +60,26 @@ function WorkflowInstance() {
         proOptions={{ hideAttribution: true }}
         fitView
       >
-        {others.map(({ connectionId, presence }) => {
-          if (presence.cursor === null) {
-            return null;
-          }
-
-          return (
-            <Cursor
-              key={`cursor-${connectionId}`}
-              // connectionId is an integer that is incremented at every new connections
-              // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
-              color={COLORS[connectionId % COLORS.length]}
-              x={(presence?.cursor as { x: number, y: number }).x}
-              y={(presence?.cursor as { x: number, y: number }).y}
-              scale={reactFlowRef.getZoom()}
-            />
-          );
-        })}
+        {reactFlowRef.viewportInitialized &&
+          createPortal(
+            others.map(({ connectionId, presence, info }) => {
+              if (presence.cursor === null) {
+                return null;
+              }
+              return (
+                <Cursor
+                  key={`cursor-${connectionId}`}
+                  name={(info as unknown as UserMeta)?.name}
+                  color={(info as unknown as UserMeta)?.color}
+                  x={(presence?.cursor as { x: number, y: number }).x}
+                  y={(presence?.cursor as { x: number, y: number }).y}
+                  scale={reactFlowRef.getZoom()}
+                />
+              );
+            }),
+            document.getElementsByClassName("react-flow__viewport")?.[0] as HTMLDivElement
+          )
+        }
         <Background gap={12} size={1} color={neutral[800]} />
       </ReactFlow>
     </div>
@@ -108,7 +110,7 @@ const COLORS = [
 
 
 export default function ReactFlowComp({ projectId }: ReactFlowCompProps) {
-  const { enterRoom, leaveRoom, isStorageLoading } = useRFState(state => state.liveblocks);
+  const { enterRoom, leaveRoom, isStorageLoading, room } = useRFState(state => state.liveblocks);
   const reset = useRFState(state => state.reset);
   const initial = useRef(false);
 

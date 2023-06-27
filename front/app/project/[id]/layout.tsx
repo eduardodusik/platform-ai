@@ -11,15 +11,18 @@ const checkUserProject = async ({ id }: { id: string }) => {
 
   if (!session?.user?.id) throw new Error("No session found");
 
-  const userProject = await prisma.userProject.findFirst({
-    where: {
-      userId: session.user.id,
-      projectId: id,
+  const url = `https://api.liveblocks.io/v2/rooms/${id}`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_SECRET_LIVEBLOCKS_PUBLIC_KEY}`,
     },
   });
+  const room = await response.json();
+  const userAccess = room?.usersAccesses?.[session?.user?.email as string];
 
-  if (!userProject) redirect("/404");
+  if (!userAccess) redirect("/404");
 };
+
 type props = {
   params: {
     id: string

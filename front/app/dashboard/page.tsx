@@ -2,11 +2,11 @@ import cx from "classnames";
 import Link from "next/link";
 import NewProject from "@/components/dashboard/NewProject";
 
-import { getProjects } from "@/app/(actions)/project";
+import { getLiveBlocksProjects, getProjects } from "@/app/(actions)/project";
 
 export default async function Dashboard() {
-  const projects = await getProjects();
-
+  const { data: projects } = await getLiveBlocksProjects();
+  console.log(projects)
   return (
     <div className="">
       <div className="flex justify-between">
@@ -23,7 +23,8 @@ export default async function Dashboard() {
             )}>
               <div className="h-10">
               </div>
-              {project.name}
+              {project.metadata.name}
+              {project.lastConnectionAt}
             </div>
           </Link>
         ))}
