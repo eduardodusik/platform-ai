@@ -1,6 +1,4 @@
-import simpleNode from "@/components/project/nodes/simpleNode";
 import { NODE_IDS_ENUM } from "@/app/project/[id]/node-data/NodeTypes";
-import { ReactNode } from "react";
 
 type FieldType =
   | "text"
@@ -9,7 +7,8 @@ type FieldType =
   | "boolean"
   | "select"
   | "multi-select"
-  | "set-env";
+  | "set-env"
+  | "use-env";
 type DynamicValue = string | string[] | number | boolean | null | undefined;
 
 export type SelectOption = {

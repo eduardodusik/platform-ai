@@ -15,7 +15,7 @@ const WHISPER_AVAILABLE_CONFIG: NodeOption[] = [
         type: "textarea",
         placeholder: "My name is Eduardo and I'm a software engineer, this audio is about AI",
         value: undefined,
-        defaultValue: 500,
+        defaultValue: undefined,
       },
     ],
   },
@@ -26,6 +26,19 @@ export const WHISPER_CONFIG: NodeDataBase = {
   name: "Whisper",
   availableConfig: WHISPER_AVAILABLE_CONFIG,
   categories: [
+    {
+      id: "audio",
+      name: "Audio",
+      values: [
+        {
+          name: "audio",
+          type: "use-env",
+          value: undefined,
+          label: "Audio",
+          defaultValue: undefined,
+        }
+      ]
+    },
     {
       id: "type",
       name: "Type",

@@ -10,13 +10,6 @@ export const metadata = {
   title: "Platatform AI",
   description:
     "Description",
-  twitter: {
-    card: "summary_large_image",
-    title: "Precedent - Building blocks for your Next.js project",
-    description:
-      "Precedent is the all-in-one solution for your Next.js project. It includes a design system, authentication, analytics, and more.",
-    creator: "@steventey",
-  },
   themeColor: "#FFF",
 };
 

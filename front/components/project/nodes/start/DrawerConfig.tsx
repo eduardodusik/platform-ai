@@ -82,6 +82,7 @@ export default function DrawerConfig({ parameterIndex, drawerIsOpen, setDrawerIs
 export function useDrawerConfig() {
   const [showDrawerConfig, setShowDrawerConfig] = useState(false);
   const [parameterIndex, setParameterIndex] = useState<number | null>(null);
+
   const onOpenDrawerConfig = useCallback((parameterIndex: number) => {
     setParameterIndex(parameterIndex);
     setShowDrawerConfig(true);

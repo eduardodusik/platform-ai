@@ -6,6 +6,9 @@ import { BiChevronDown } from "react-icons/all";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import { useRFState } from "../../store/FlowStore";
 import { useVariableStore } from "@/components/NewVariableDialog";
+import { useMemo } from "react";
+import { Node } from "reactflow";
+import { StartData } from "@/components/project/nodes/start/start.type";
 
 type DynamicFormProps = {
   fields: Field[];
@@ -112,6 +115,11 @@ function Field({
   if (field.type === "set-env") {
     return <SetVariable field={field} onChange={onChange} />;
   }
+
+  if (field.type === "use-env") {
+    return <UseVariable field={field} onChange={onChange} />
+  }
+
   return (
     <Form.Field name={field.name}>
       <Form.Label>{field.name}</Form.Label>
@@ -122,10 +130,95 @@ function Field({
   );
 }
 
+
+
 type SetVariableProps = {
   field: Field;
   onChange: (newValue: any) => void;
 };
+
+function UseVariable({field, onChange}: SetVariableProps) {
+  const { variables, nodes } = useRFState((store) => ({
+    variables: store.variables,
+    nodes: store.nodes,
+  }));
+
+  const parameters = useMemo(() => {
+    const nodeStart = nodes.find(node => node.type ===  "START");
+    if (nodeStart) {
+      return [...(nodeStart as unknown as Node<StartData>).data.parameters.map(item => ({key: item.name})), ...variables];
+    }
+  }, [nodes, variables]);
+
+
+  return (
+    <Form.Field name={field.name} className="flex flex-col gap-1">
+      <Form.Label className="text-md font-semibold">{field.label}</Form.Label>
+      <Form.Control
+        asChild
+        defaultValue={field?.value as string}
+        placeholder={field?.placeholder}
+      >
+        <Select.Root
+          defaultValue={field?.value as string}
+          onValueChange={(value) => {
+            onChange(value);
+          }}
+        >
+          <Select.Trigger asChild aria-label="Food">
+            <button
+              className={cx(
+                "border-1 inline-flex w-full justify-between rounded border p-2",
+                "rounded border-neutral-500 bg-transparent text-white",
+                "rdx-hover:border-amber-800",
+              )}
+            >
+              <div className="flex gap-2">
+                <div className="rounded bg-neutral-700 p-px px-1">Use variable</div>
+                <Select.Value />
+              </div>
+              <Select.Icon className="ml-2">
+                <BiChevronDown />
+              </Select.Icon>
+            </button>
+          </Select.Trigger>
+          <Select.Content
+            side="bottom"
+            position="popper"
+            className="mt-1 !min-w-[var(--radix-select-trigger-width)] rounded-lg bg-white shadow-lg dark:bg-neutral-700"
+          >
+            <ScrollArea.Root className="ScrollAreaRoot w-full">
+              <Select.Viewport asChild className="p-4">
+                <ScrollArea.Viewport className="ScrollAreaViewport">
+                  {parameters?.map((variable, i) => (
+                    <Select.Item
+                      key={variable.key}
+                      value={variable.key}
+                      className={cx(
+                        "relative flex items-center rounded-md p-2 text-sm font-medium text-gray-700 focus:bg-neutral-400 dark:text-gray-300 dark:focus:bg-neutral-500",
+                        "cursor-pointer rdx-disabled:cursor-not-allowed rdx-disabled:opacity-50",
+                        "select-none focus:outline-none",
+                      )}
+                    >
+                      <Select.ItemText>{variable.key}</Select.ItemText>
+                    </Select.Item>
+                  ))}
+                </ScrollArea.Viewport>
+              </Select.Viewport>
+              <ScrollArea.Scrollbar
+                orientation="vertical"
+                className="ScrollAreaScrollbar"
+              >
+                <ScrollArea.Thumb className="ScrollAreaThumb" />
+              </ScrollArea.Scrollbar>
+              <ScrollArea.Corner className="ScrollAreaCorner" />
+            </ScrollArea.Root>
+          </Select.Content>
+        </Select.Root>
+      </Form.Control>
+    </Form.Field>
+  )
+}
 
 function SetVariable({ field, onChange }: SetVariableProps) {
   const { variables } = useRFState((store) => ({
